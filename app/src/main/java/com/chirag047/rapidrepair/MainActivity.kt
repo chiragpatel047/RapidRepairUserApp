@@ -10,6 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.chirag047.rapidrepair.Presentation.Screens.OnBoardingScreen
+import com.chirag047.rapidrepair.Presentation.Screens.SignUpScreen
+import com.chirag047.rapidrepair.Presentation.Screens.WelcomeScreen
 import com.chirag047.rapidrepair.ui.theme.RapidRepairTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,25 +28,27 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    App()
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    @Composable
+    fun App() {
+        val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    RapidRepairTheme {
-        Greeting("Android")
+        NavHost(navController = navController, startDestination = "WelcomeScreen") {
+            composable(route = "WelcomeScreen") {
+                WelcomeScreen(navController)
+            }
+            composable(route = "OnBoardingScreen") {
+                OnBoardingScreen(navController)
+            }
+            composable(route = "SignUpScreen") {
+                SignUpScreen(navController)
+            }
+        }
     }
+
 }
