@@ -24,7 +24,7 @@ fun textBetweenTwoLines(text: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(25.dp, 10.dp),
+            .padding(25.dp, 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(
@@ -36,7 +36,7 @@ fun textBetweenTwoLines(text: String) {
         Text(
             text = text,
             textAlign = TextAlign.Center,
-            fontSize = 12.sp,
+            fontSize = 14.sp,
             fontFamily = FontFamily(Font(R.font.poppins_medium)),
             modifier = Modifier
                 .padding(20.dp, 5.dp)

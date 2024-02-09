@@ -13,6 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
+import com.chirag047.rapidrepair.Presentation.Screens.AllowNotification
+import com.chirag047.rapidrepair.Presentation.Screens.LoginScreen
 import com.chirag047.rapidrepair.Presentation.Screens.OnBoardingScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SignUpScreen
 import com.chirag047.rapidrepair.Presentation.Screens.WelcomeScreen
@@ -47,6 +50,15 @@ class MainActivity : ComponentActivity() {
             }
             composable(route = "SignUpScreen") {
                 SignUpScreen(navController)
+            }
+            composable(route = "LoginScreen") {
+                LoginScreen(navController)
+            }
+            composable(route = "AllowLocation") {
+                AllowLocation(navController)
+            }
+            composable(route = "AllowNotification") {
+                AllowNotification(navController)
             }
         }
     }

@@ -8,10 +8,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SubjectImage(image: Int) {
+fun SubjectImage(image: Int,modifier: Modifier) {
     Image(
         painter = painterResource(id = image),
         contentDescription = "",
-        modifier = Modifier.padding(40.dp, 40.dp, 40.dp, 0.dp)
+        modifier = modifier
     )
 }

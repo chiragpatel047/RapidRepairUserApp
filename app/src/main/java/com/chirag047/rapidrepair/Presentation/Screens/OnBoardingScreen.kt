@@ -85,6 +85,7 @@ fun OnBoardingScreen(navController: NavController) {
                 }
             }
         }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
