@@ -108,3 +108,27 @@ fun FilledCustomButton(imageIcon: Int, onClick: () -> Unit) {
         )
     }
 }
+
+
+
+@Composable
+fun FilledCommonCustomButton(imageIcon: Int, onClick: () -> Unit) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .size(35.dp)
+            .clip(RoundedCornerShape(30.dp)),  //avoid the oval shape
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        )
+    ) {
+        Icon(
+            painterResource(id = imageIcon),
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.onSecondaryContainer,
+            modifier = Modifier
+                .size(35.dp)
+                .padding(8.dp)
+        )
+    }
+}
