@@ -42,7 +42,7 @@ fun WelcomeScreen(navController: NavController) {
             contentAlignment = Alignment.Center
         ) {
             SubjectImage(
-                image = R.drawable.login_subject_image,
+                image = R.drawable.hello_subject_image,
                 Modifier.padding(40.dp, 0.dp)
             )
         }

@@ -35,7 +35,7 @@ fun FullWidthButton(label: String, color: Color, onClick: () -> Unit) {
         colors = ButtonDefaults.buttonColors(color),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp,0.dp)
+            .padding(15.dp, 0.dp)
     ) {
         Text(
             text = label,
@@ -51,14 +51,13 @@ fun FullWidthButton(label: String, color: Color, onClick: () -> Unit) {
 fun FullWidthTransparentButton(label: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
+        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.onBackground),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp,0.dp)
+            .padding(15.dp, 0.dp)
     ) {
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.onSecondary,
             fontSize = 16.sp,
             fontFamily = FontFamily(Font(R.font.poppins_medium)),
             modifier = Modifier

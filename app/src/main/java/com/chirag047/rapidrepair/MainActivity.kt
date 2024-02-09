@@ -17,7 +17,9 @@ import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
 import com.chirag047.rapidrepair.Presentation.Screens.AllowNotification
 import com.chirag047.rapidrepair.Presentation.Screens.ForgetPassword
 import com.chirag047.rapidrepair.Presentation.Screens.LoginScreen
+import com.chirag047.rapidrepair.Presentation.Screens.MainScreen
 import com.chirag047.rapidrepair.Presentation.Screens.OnBoardingScreen
+import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.SignUpScreen
 import com.chirag047.rapidrepair.Presentation.Screens.WelcomeScreen
 import com.chirag047.rapidrepair.ui.theme.RapidRepairTheme
@@ -63,6 +65,12 @@ class MainActivity : ComponentActivity() {
             }
             composable(route = "ForgetPassword") {
                 ForgetPassword(navController)
+            }
+            composable(route = "SelectVehicle") {
+                SelectVehicle(navController)
+            }
+            composable(route = "MainScreen") {
+                MainScreen(navController)
             }
         }
     }
