@@ -33,36 +33,34 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingScreen(navController: NavController) {
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
+    Column(modifier = Modifier.fillMaxSize()) {
         val pagerState = rememberPagerState(
             initialPage = 0,
             initialPageOffsetFraction = 0f
         ) {
             3
         }
-        Column {
+        Column(modifier = Modifier.weight(1f)) {
 
-            Spacer(modifier = Modifier.padding(2.dp))
             Text(
                 text = "Skip",
                 textAlign = TextAlign.End,
                 fontFamily = FontFamily(Font(R.font.poppins_medium)),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp, 5.dp)
+                    .padding(20.dp, 10.dp)
                     .clickable {
-                        navController.navigate("login")
+                        navController.navigate("SignUpScreen")
                     }
             )
-
-            Spacer(modifier = Modifier.padding(16.dp))
+            Spacer(modifier = Modifier.padding(20.dp))
 
             HorizontalPager(state = pagerState) {
                 when (it) {
                     0 -> {
                         OnBoard(
                             image = R.drawable.repair_subject_image,
-                            heading = "Excellence in Every Service",
+                            heading = "Excellence in Every Service We Provide",
                             content = " we redefine excellence in every service, ensuring your vehicle's performance reaches new heights."
                         )
                     }
@@ -78,8 +76,8 @@ fun OnBoardingScreen(navController: NavController) {
                     2 -> {
                         OnBoard(
                             image = R.drawable.location_subject_image,
-                            heading = "Live Track Your Mechanic",
-                            content = "Providing real-time updates on your mechanic, ensuring you're always in control of its arrival."
+                            heading = "Live Track Your Mechanic At Your Finger",
+                            content = "Providing real-time updates on your mechanic, ensuring you're always in control of its arrival. Give you assurance"
                         )
                     }
                 }
@@ -126,5 +124,6 @@ fun OnBoardingScreen(navController: NavController) {
                 }
             }
         }
+        Spacer(modifier = Modifier.padding(20.dp))
     }
 }

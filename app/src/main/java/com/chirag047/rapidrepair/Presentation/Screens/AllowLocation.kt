@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
+import com.chirag047.rapidrepair.Presentation.Components.FullWidthTransparentButton
 import com.chirag047.rapidrepair.Presentation.Components.SubjectImage
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldCenterText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsCenterText
@@ -51,10 +52,12 @@ fun AllowLocation(navController: NavController) {
 
         Spacer(modifier = Modifier.padding(20.dp))
 
-        FullWidthButton(label = "Turn on Notification", MaterialTheme.colorScheme.primary) {
+        FullWidthButton(label = "Enable Location", MaterialTheme.colorScheme.primary) {
             navController.navigate("AllowNotification")
         }
-        FullWidthButton(label = "Now now", Color.Transparent) {
+        Spacer(modifier = Modifier.padding(5.dp))
+
+        FullWidthTransparentButton(label = "Now now") {
             navController.navigate("AllowNotification")
         }
 

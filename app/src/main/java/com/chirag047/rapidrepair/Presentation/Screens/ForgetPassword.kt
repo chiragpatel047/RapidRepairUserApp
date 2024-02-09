@@ -12,10 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,21 +33,19 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
 import com.chirag047.rapidrepair.Presentation.Components.SubjectImage
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldCenterText
-import com.chirag047.rapidrepair.Presentation.Components.poppinsText
+import com.chirag047.rapidrepair.Presentation.Components.poppinsCenterText
 import com.chirag047.rapidrepair.Presentation.Components.textBetweenTwoLines
 import com.chirag047.rapidrepair.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreen(navController: NavController) {
-
+fun ForgetPassword(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()) {
 
         Column() {
@@ -64,58 +59,37 @@ fun SignUpScreen(navController: NavController) {
                 contentAlignment = Alignment.Center
             ) {
                 SubjectImage(
-                    image = R.drawable.login_subject_image,
+                    image = R.drawable.forgetpassword_subject_image,
                     Modifier.padding(40.dp, 0.dp)
                 )
             }
 
             poppinsBoldCenterText(
-                contentText = "Your Seamless Repair App",
+                contentText = "Reset link at your inbox",
                 22.sp,
                 Modifier
                     .fillMaxWidth()
                     .padding(15.dp)
             )
 
-            textBetweenTwoLines(text = "Register")
+
+            poppinsCenterText(
+                contentText = "Please, enter your email address. you will receive a link to reset your password via email.",
+                size = 14.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp, 5.dp, 15.dp, 15.dp)
+            )
+
+            textBetweenTwoLines(text = "Forget Password")
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var nameText by remember { mutableStateOf("") }
+
                 var emailText by remember { mutableStateOf("") }
-                var passwordText by remember { mutableStateOf("") }
-
-                TextField(
-                    value = nameText,
-                    singleLine = true,
-                    onValueChange = { nameText = it },
-                    textStyle = TextStyle(
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.poppins_medium))
-                    ),
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    ),
-                    placeholder = {
-                        Text(
-                            text = "Username",
-                            fontSize = 12.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_medium))
-                        )
-                    },
-
-                    modifier = Modifier
-                        .background(Color.Transparent)
-                        .fillMaxWidth()
-                        .padding(20.dp, 10.dp)
-                        .border(1.dp, Color.LightGray, RoundedCornerShape(50.dp))
-
-                )
 
                 TextField(
                     value = emailText,
@@ -146,70 +120,16 @@ fun SignUpScreen(navController: NavController) {
 
                 )
 
-                TextField(
-                    value = passwordText,
-                    singleLine = true,
-                    textStyle = TextStyle(
-                        fontSize = 14.sp,
-                        fontFamily = FontFamily(Font(R.font.poppins_medium))
-                    ),
-                    visualTransformation = PasswordVisualTransformation(),
-                    onValueChange = { passwordText = it },
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.Transparent,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    ),
-                    placeholder = {
-                        Text(
-                            text = "Password",
-                            fontSize = 12.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_medium))
-                        )
-                    },
-
-                    modifier = Modifier
-                        .background(Color.Transparent)
-                        .fillMaxWidth()
-                        .padding(20.dp, 10.dp)
-                        .border(1.dp, Color.LightGray, RoundedCornerShape(50.dp))
-                )
-            }
-
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp, 10.dp)
-                    .clickable {
-                        navController.navigate("LoginScreen")
-                    },
-                horizontalArrangement = Arrangement.End
-            ) {
-                Text(
-                    text = "Already have account",
-                    fontSize = 14.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_medium))
-                )
-                Spacer(modifier = Modifier.padding(5.dp))
-                Icon(
-                    painter = painterResource(id = R.drawable.arrowicon), contentDescription = "",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .size(18.dp)
-                        .rotate(180f)
-                )
-
             }
 
             Spacer(modifier = Modifier.padding(10.dp))
 
-
-            FullWidthButton(label = "Register", MaterialTheme.colorScheme.primary) {
-                navController.navigate("AllowLocation")
+            FullWidthButton(label = "Send email", MaterialTheme.colorScheme.primary) {
+//                navController.navigate("")
             }
 
             Spacer(modifier = Modifier.padding(40.dp))
         }
     }
-}
 
+}

@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
 import com.chirag047.rapidrepair.Presentation.Screens.AllowNotification
+import com.chirag047.rapidrepair.Presentation.Screens.ForgetPassword
 import com.chirag047.rapidrepair.Presentation.Screens.LoginScreen
 import com.chirag047.rapidrepair.Presentation.Screens.OnBoardingScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SignUpScreen
@@ -60,7 +61,10 @@ class MainActivity : ComponentActivity() {
             composable(route = "AllowNotification") {
                 AllowNotification(navController)
             }
+            composable(route = "ForgetPassword") {
+                ForgetPassword(navController)
+            }
         }
     }
-
 }
+

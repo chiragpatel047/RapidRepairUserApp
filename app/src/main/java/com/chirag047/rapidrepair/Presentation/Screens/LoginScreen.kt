@@ -46,134 +46,139 @@ import com.chirag047.rapidrepair.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController) {
-    Box() {
-        Box(modifier = Modifier.fillMaxSize()) {
 
-            Column() {
+    Box(modifier = Modifier.fillMaxSize()) {
 
-                Spacer(modifier = Modifier.padding(10.dp))
+        Column() {
 
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    SubjectImage(
-                        image = R.drawable.login_subject_image,
-                        Modifier.padding(40.dp, 0.dp)
-                    )
-                }
+            Spacer(modifier = Modifier.padding(10.dp))
 
-                poppinsBoldCenterText(
-                    contentText = "Hey Dear Welcome Back",
-                    22.sp,
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                contentAlignment = Alignment.Center
+            ) {
+                SubjectImage(
+                    image = R.drawable.login_subject_image,
+                    Modifier.padding(40.dp, 0.dp)
                 )
+            }
 
-                textBetweenTwoLines(text = "Login")
+            poppinsBoldCenterText(
+                contentText = "Hey Dear Welcome Back",
+                22.sp,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+            )
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
+            textBetweenTwoLines(text = "Login")
 
-                    var emailText by remember { mutableStateOf("") }
-                    var passwordText by remember { mutableStateOf("") }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-                    TextField(
-                        value = emailText,
-                        singleLine = true,
-                        onValueChange = { emailText = it },
-                        textStyle = TextStyle(
-                            fontSize = 14.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_medium))
-                        ),
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
-                        ),
-                        placeholder = {
-                            Text(
-                                text = "Email",
-                                fontSize = 12.sp,
-                                fontFamily = FontFamily(Font(R.font.poppins_medium))
-                            )
-                        },
+                var emailText by remember { mutableStateOf("") }
+                var passwordText by remember { mutableStateOf("") }
 
-                        modifier = Modifier
-                            .background(Color.Transparent)
-                            .fillMaxWidth()
-                            .padding(20.dp, 10.dp)
-                            .border(1.dp, Color.LightGray, RoundedCornerShape(50.dp))
-
-                    )
-
-                    TextField(
-                        value = passwordText,
-                        singleLine = true,
-                        textStyle = TextStyle(
-                            fontSize = 14.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_medium))
-                        ),
-                        visualTransformation = PasswordVisualTransformation(),
-                        onValueChange = { passwordText = it },
-                        colors = TextFieldDefaults.textFieldColors(
-                            containerColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
-                        ),
-                        placeholder = {
-                            Text(
-                                text = "Password",
-                                fontSize = 12.sp,
-                                fontFamily = FontFamily(Font(R.font.poppins_medium))
-                            )
-                        },
-
-                        modifier = Modifier
-                            .background(Color.Transparent)
-                            .fillMaxWidth()
-                            .padding(20.dp, 10.dp)
-                            .border(1.dp, Color.LightGray, RoundedCornerShape(50.dp))
-                    )
-                }
-
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp, 10.dp)
-                        .clickable {
-                            navController.navigate("")
-                        },
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Text(
-                        text = "Forget Password ?",
+                TextField(
+                    value = emailText,
+                    singleLine = true,
+                    onValueChange = { emailText = it },
+                    textStyle = TextStyle(
                         fontSize = 14.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_medium))
-                    )
-                    Spacer(modifier = Modifier.padding(5.dp))
-                    Icon(
-                        painter = painterResource(id = R.drawable.arrowicon),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .size(18.dp)
-                            .rotate(180f)
-                    )
-                }
-                FullWidthButton(label = "Login", MaterialTheme.colorScheme.primary) {
-                    navController.navigate("AllowLocation")
-                }
+                    ),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+                    placeholder = {
+                        Text(
+                            text = "Email",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_medium))
+                        )
+                    },
 
-                Spacer(modifier = Modifier.padding(40.dp))
+                    modifier = Modifier
+                        .background(Color.Transparent)
+                        .fillMaxWidth()
+                        .padding(20.dp, 10.dp)
+                        .border(1.dp, Color.LightGray, RoundedCornerShape(50.dp))
+
+                )
+
+                TextField(
+                    value = passwordText,
+                    singleLine = true,
+                    textStyle = TextStyle(
+                        fontSize = 14.sp,
+                        fontFamily = FontFamily(Font(R.font.poppins_medium))
+                    ),
+                    visualTransformation = PasswordVisualTransformation(),
+                    onValueChange = { passwordText = it },
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+                    placeholder = {
+                        Text(
+                            text = "Password",
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_medium))
+                        )
+                    },
+
+                    modifier = Modifier
+                        .background(Color.Transparent)
+                        .fillMaxWidth()
+                        .padding(20.dp, 10.dp)
+                        .border(1.dp, Color.LightGray, RoundedCornerShape(50.dp))
+                )
             }
-        }
 
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp, 10.dp)
+                    .clickable {
+                        navController.navigate("ForgetPassword")
+                    },
+                horizontalArrangement = Arrangement.End
+            ) {
+                Text(
+                    text = "Forget Password ?",
+                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.poppins_medium))
+                )
+                Spacer(modifier = Modifier.padding(5.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.arrowicon),
+                    contentDescription = "",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .size(18.dp)
+                        .rotate(180f)
+                )
+
+            }
+
+            Spacer(modifier = Modifier.padding(10.dp))
+
+
+            FullWidthButton(label = "Login", MaterialTheme.colorScheme.primary) {
+                navController.navigate("AllowLocation")
+            }
+
+            Spacer(modifier = Modifier.padding(40.dp))
+        }
     }
+
+
 }

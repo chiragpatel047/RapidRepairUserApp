@@ -33,12 +33,19 @@ fun WelcomeScreen(navController: NavController) {
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-        Spacer(modifier = Modifier.padding(30.dp))
+        Spacer(modifier = Modifier.padding(20.dp))
 
-        SubjectImage(
-            image = R.drawable.hello_subject_image,
-            Modifier.padding(40.dp, 40.dp, 40.dp, 40.dp)
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            SubjectImage(
+                image = R.drawable.login_subject_image,
+                Modifier.padding(40.dp, 0.dp)
+            )
+        }
 
         poppinsBoldCenterText(
             contentText = "Hello, Welcome dear!!",
@@ -59,7 +66,8 @@ fun WelcomeScreen(navController: NavController) {
         FullWidthButton(label = "Let's Get Start", color = MaterialTheme.colorScheme.primary) {
             navController.navigate("OnBoardingScreen")
         }
+
+        Spacer(modifier = Modifier.padding(40.dp))
+
     }
-
-
 }
