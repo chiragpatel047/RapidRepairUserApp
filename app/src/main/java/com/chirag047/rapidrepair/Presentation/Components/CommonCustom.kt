@@ -1,6 +1,7 @@
 package com.chirag047.rapidrepair.Presentation.Components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,4 +50,38 @@ fun textBetweenTwoLines(text: String) {
                 .background(Color.LightGray)
         )
     }
+}
+
+
+@Composable
+fun textWithSeeAllText(title: String) {
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp, 10.dp, 20.dp, 10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+
+        Text(
+            text = title,
+            textAlign = TextAlign.Start,
+            fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onBackground,
+            fontWeight = FontWeight.Bold,
+            fontFamily = FontFamily(Font(R.font.poppins_medium))
+        )
+
+        Text(
+            text = "See All",
+            textAlign = TextAlign.Start,
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.primary,
+            fontFamily = FontFamily(Font(R.font.poppins_medium))
+        )
+
+    }
+
 }
