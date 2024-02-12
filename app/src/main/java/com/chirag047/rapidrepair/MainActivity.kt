@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.chirag047.rapidrepair.Presentation.Screens.AddNewVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
 import com.chirag047.rapidrepair.Presentation.Screens.AllowNotification
 import com.chirag047.rapidrepair.Presentation.Screens.ForgetPassword
@@ -21,6 +22,7 @@ import com.chirag047.rapidrepair.Presentation.Screens.MainScreen
 import com.chirag047.rapidrepair.Presentation.Screens.OnBoardingScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.SignUpScreen
+import com.chirag047.rapidrepair.Presentation.Screens.VehicleScreen
 import com.chirag047.rapidrepair.Presentation.Screens.WelcomeScreen
 import com.chirag047.rapidrepair.ui.theme.RapidRepairTheme
 
@@ -71,6 +73,12 @@ class MainActivity : ComponentActivity() {
             }
             composable(route = "MainScreen") {
                 MainScreen(navController)
+            }
+            composable(route = "VehicleScreen") {
+                VehicleScreen(navController)
+            }
+            composable(route = "AddNewVehicle") {
+                AddNewVehicle(navController)
             }
         }
     }

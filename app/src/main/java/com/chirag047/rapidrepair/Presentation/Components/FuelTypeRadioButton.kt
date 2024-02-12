@@ -18,10 +18,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -32,8 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun SelectVehicleRadioButton(vehicleList: List<VehicleType>): Int {
-
+fun FuelTypeRadioButton(fuelList: List<String>): Int {
     var selectedIndex = remember { mutableStateOf(-1) }
 
 
@@ -46,13 +43,11 @@ fun SelectVehicleRadioButton(vehicleList: List<VehicleType>): Int {
     ) {
 
         Spacer(modifier = Modifier.padding(10.dp))
-        vehicleList.forEachIndexed { index, it ->
+        fuelList.forEachIndexed { index, it ->
 
             Column(
                 Modifier
-                    .height(130.dp)
-                    .width(130.dp)
-                    .padding(10.dp)
+                    .padding(8.dp)
                     .border(
                         1.dp,
                         if (index.equals(selectedIndex.value)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
@@ -66,34 +61,22 @@ fun SelectVehicleRadioButton(vehicleList: List<VehicleType>): Int {
                 verticalArrangement = Arrangement.Center
 
             ) {
-
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Icon(
-                        painter = painterResource(id = it.vehicleIcon),
-                        contentDescription = "",
-                        tint = if (index.equals(selectedIndex.value)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(50.dp)
-                    )
-                    Spacer(modifier = Modifier.padding(4.dp))
-                    Text(
-                        text = it.vehicleName,
-                        fontFamily = FontFamily(Font(R.font.poppins_medium)),
-                        color = if (index.equals(selectedIndex.value)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
-                        fontSize = 12.sp
-                    )
-                }
+                Text(
+                    text = it,
+                    fontFamily = FontFamily(Font(R.font.poppins_medium)),
+                    color = if (index.equals(selectedIndex.value)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(20.dp, 10.dp)
+                )
             }
         }
         Spacer(modifier = Modifier.padding(10.dp))
     }
-
     return selectedIndex.value
+
 }
 
-data class VehicleType(
-    val vehicleName: String,
-    val vehicleIcon: Int
+data class FuelType(
+    val fuelName: String,
+    val fuelIcon: Int
 )

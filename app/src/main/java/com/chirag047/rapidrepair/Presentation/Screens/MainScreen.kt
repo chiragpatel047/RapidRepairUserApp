@@ -43,7 +43,7 @@ fun MainScreen(navController: NavController) {
                 }
 
                 NavigationItem.VehicleNav.route -> {
-                    //OrdersNavScreen()
+                    VehicleScreen(navController)
                 }
 
                 NavigationItem.ServiceNav.route -> {

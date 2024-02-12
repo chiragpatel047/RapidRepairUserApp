@@ -118,7 +118,7 @@ fun HomeScreen() {
             }
         }
 
-        SearchBar("Search by Restaurants and Dishes...")
+        SearchBar("Search near services...")
 
         Row(
             Modifier

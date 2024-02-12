@@ -56,8 +56,7 @@ fun SelectVehicle(navController: NavController) {
                 .padding(15.dp)
         )
 
-        Spacer(modifier = Modifier.padding(20.dp))
-
+        Spacer(modifier = Modifier.padding(10.dp))
 
         val vehicleList = listOf<VehicleType>(
             VehicleType("Car", R.drawable.car_icon),

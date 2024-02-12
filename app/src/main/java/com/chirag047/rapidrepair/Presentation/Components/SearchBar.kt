@@ -24,6 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chirag047.rapidrepair.R
@@ -56,6 +59,10 @@ fun SearchBar(searchPlaceholder: String) {
 
         TextField(
             value = text,
+            textStyle = TextStyle(
+                fontSize = 12.sp,
+                fontFamily = FontFamily(Font(R.font.poppins_medium))
+            ),
             onValueChange = { text = it },
             colors = TextFieldDefaults.textFieldColors(
                 containerColor = Color.Transparent,
@@ -65,8 +72,8 @@ fun SearchBar(searchPlaceholder: String) {
             placeholder = {
                 Text(
                     text = searchPlaceholder,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontSize = 14.sp,
+                    fontFamily = FontFamily(Font(R.font.poppins_medium)),
+                    fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.outline
                 )
             },
