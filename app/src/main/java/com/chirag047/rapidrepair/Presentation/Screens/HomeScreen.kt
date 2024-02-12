@@ -50,11 +50,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.chirag047.rapidrepair.Presentation.Components.FilledCommonCustomButton
 import com.chirag047.rapidrepair.Presentation.Components.FilledCustomButton
 import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
 import com.chirag047.rapidrepair.Presentation.Components.GrayFilledSimpleButton
 import com.chirag047.rapidrepair.Presentation.Components.SearchBar
+import com.chirag047.rapidrepair.Presentation.Components.SingleCardService
 import com.chirag047.rapidrepair.Presentation.Components.SingleGarage
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsText
@@ -63,7 +65,7 @@ import com.chirag047.rapidrepair.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
 
     val scroll = rememberScrollState()
 
@@ -188,8 +190,10 @@ fun HomeScreen() {
             Modifier
                 .fillMaxWidth()
         ) {
-            Column(
-                Modifier
+
+            SingleCardService(icon = R.drawable.services_icon,
+                title = "Vehicle Service",
+                modifier = Modifier
                     .weight(1f)
                     .padding(15.dp, 0.dp, 7.dp, 0.dp)
                     .shadow(
@@ -200,40 +204,11 @@ fun HomeScreen() {
                     .background(MaterialTheme.colorScheme.primaryContainer)
                     .clickable {
 
-                    },
-                horizontalAlignment = Alignment.CenterHorizontally
+                    })
 
-            ) {
-                Spacer(modifier = Modifier.padding(10.dp))
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(RoundedCornerShape(80.dp))
-                        .background(MaterialTheme.colorScheme.secondary),
-                ) {
-                    Icon(
-                        painterResource(id = R.drawable.services_icon),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onSecondary,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .padding(20.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.padding(10.dp))
-                Text(
-                    text = "Vehicle Service",
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily(Font(R.font.poppins_medium)),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.fillMaxWidth(),
-                    fontSize = 14.sp
-                )
-                Spacer(modifier = Modifier.padding(10.dp))
-            }
-            Column(
-                Modifier
+            SingleCardService(icon = R.drawable.towtruck_icon,
+                title = "RSA Service",
+                modifier = Modifier
                     .weight(1f)
                     .padding(7.dp, 0.dp, 15.dp, 0.dp)
                     .shadow(
@@ -244,44 +219,15 @@ fun HomeScreen() {
                     .background(MaterialTheme.colorScheme.primaryContainer)
                     .clickable {
 
-                    },
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.padding(10.dp))
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(RoundedCornerShape(80.dp))
-                        .background(MaterialTheme.colorScheme.secondary)
-                ) {
-                    Icon(
-                        painterResource(id = R.drawable.towtruck_icon),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onSecondary,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .padding(20.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.padding(10.dp))
-                Text(
-                    text = "RSA Service",
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    fontFamily = FontFamily(Font(R.font.poppins_medium)),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.fillMaxWidth(),
-                    fontSize = 14.sp
-                )
-                Spacer(modifier = Modifier.padding(10.dp))
-            }
+                    })
 
         }
 
+
         Spacer(modifier = Modifier.padding(4.dp))
         textWithSeeAllText(title = "Near you")
-        SingleGarage()
-        SingleGarage()
-        SingleGarage()
+        SingleGarage(navController)
+        SingleGarage(navController)
+        SingleGarage(navController)
     }
 }

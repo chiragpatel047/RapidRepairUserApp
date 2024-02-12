@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.chirag047.rapidrepair.Presentation.Components.ActionBarWIthBack
 import com.chirag047.rapidrepair.Presentation.Components.FuelType
 import com.chirag047.rapidrepair.Presentation.Components.FuelTypeRadioButton
 import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
@@ -59,28 +60,7 @@ fun AddNewVehicle(navController: NavController) {
             .fillMaxWidth()
             .verticalScroll(scroll)
     ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(15.dp, 20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.down_arrow_icon),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(30.dp)
-                    .padding(5.dp)
-                    .rotate(90f),
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-            poppinsBoldCenterText(
-                contentText = "Add new vehicle",
-                size = 16.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-        }
+        ActionBarWIthBack(title = "Add new vehicle")
 
         Spacer(modifier = Modifier.padding(4.dp))
         poppinsBoldText(

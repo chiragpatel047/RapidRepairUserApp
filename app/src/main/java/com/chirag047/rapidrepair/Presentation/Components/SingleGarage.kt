@@ -27,17 +27,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun SingleGarage() {
+fun SingleGarage(navController: NavController) {
     Row(
         Modifier
             .padding(15.dp, 7.dp)
             .clip(RoundedCornerShape(25.dp))
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .clickable {
-
+                navController.navigate("SelectServiceScreen")
             },
         verticalAlignment = Alignment.CenterVertically
     ) {

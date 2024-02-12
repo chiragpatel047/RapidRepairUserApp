@@ -24,6 +24,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.chirag047.rapidrepair.Presentation.Components.NavigationItem
 import com.chirag047.rapidrepair.R
 
@@ -39,7 +42,7 @@ fun MainScreen(navController: NavController) {
         ) {
             when (currentNavScreen.value) {
                 NavigationItem.HomeNav.route -> {
-                    HomeScreen()
+                    HomeScreen(navController)
                 }
 
                 NavigationItem.VehicleNav.route -> {
@@ -47,7 +50,7 @@ fun MainScreen(navController: NavController) {
                 }
 
                 NavigationItem.ServiceNav.route -> {
-                    //SavedNavScreen()
+                    ServiceScreen(navController)
                 }
 
                 NavigationItem.ProfileNav.route -> {
@@ -56,28 +59,6 @@ fun MainScreen(navController: NavController) {
 
             }
         }
-//        val navNavHostController = rememberNavController()
-//
-//        NavHost(
-//            navController = navNavHostController,
-//            startDestination = NavigationItem.HomeNav.route
-//        ) {
-//            composable(route = NavigationItem.HomeNav.route) {
-//                currentNavScreen.value = NavigationItem.HomeNav.route
-//            }
-//            composable(route = NavigationItem.OrderNav.route) {
-//                currentNavScreen.value = NavigationItem.OrderNav.route
-//            }
-//            composable(route = NavigationItem.SaveNav.route) {
-//                currentNavScreen.value = NavigationItem.SaveNav.route
-//            }
-//            composable(route = NavigationItem.CartNav.route) {
-//                currentNavScreen.value = NavigationItem.CartNav.route
-//            }
-//            composable(route = NavigationItem.ProfileNav.route) {
-//                currentNavScreen.value = NavigationItem.ProfileNav.route
-//            }
-//        }
 
         val list = listOf(
             NavigationItem.HomeNav,

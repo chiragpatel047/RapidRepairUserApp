@@ -17,10 +17,13 @@ import com.chirag047.rapidrepair.Presentation.Screens.AddNewVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
 import com.chirag047.rapidrepair.Presentation.Screens.AllowNotification
 import com.chirag047.rapidrepair.Presentation.Screens.ForgetPassword
+import com.chirag047.rapidrepair.Presentation.Screens.HomeScreen
 import com.chirag047.rapidrepair.Presentation.Screens.LoginScreen
 import com.chirag047.rapidrepair.Presentation.Screens.MainScreen
 import com.chirag047.rapidrepair.Presentation.Screens.OnBoardingScreen
+import com.chirag047.rapidrepair.Presentation.Screens.SelectServiceScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicle
+import com.chirag047.rapidrepair.Presentation.Screens.ServiceScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SignUpScreen
 import com.chirag047.rapidrepair.Presentation.Screens.VehicleScreen
 import com.chirag047.rapidrepair.Presentation.Screens.WelcomeScreen
@@ -46,7 +49,7 @@ class MainActivity : ComponentActivity() {
     fun App() {
         val navController = rememberNavController()
 
-        NavHost(navController = navController, startDestination = "MainScreen") {
+        NavHost(navController = navController, startDestination = "WelcomeScreen") {
             composable(route = "WelcomeScreen") {
                 WelcomeScreen(navController)
             }
@@ -74,11 +77,20 @@ class MainActivity : ComponentActivity() {
             composable(route = "MainScreen") {
                 MainScreen(navController)
             }
+            composable(route = "HomeScreen") {
+                HomeScreen(navController)
+            }
             composable(route = "VehicleScreen") {
                 VehicleScreen(navController)
             }
+            composable(route = "ServiceScreen") {
+                ServiceScreen(navController)
+            }
             composable(route = "AddNewVehicle") {
                 AddNewVehicle(navController)
+            }
+            composable(route = "SelectServiceScreen") {
+                SelectServiceScreen(navController)
             }
         }
     }
