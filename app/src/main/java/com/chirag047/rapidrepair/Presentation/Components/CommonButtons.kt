@@ -132,3 +132,25 @@ fun FilledCommonCustomButton(imageIcon: Int, onClick: () -> Unit) {
         )
     }
 }
+
+@Composable
+fun GrayFilledSimpleButton(imageIcon: Int, onClick: () -> Unit) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier
+            .clip(RoundedCornerShape(50.dp))
+            .size(40.dp),
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        )
+    ) {
+        Icon(
+            painterResource(id = imageIcon),
+            contentDescription = "",
+            tint = MaterialTheme.colorScheme.onSecondaryContainer,
+            modifier = Modifier
+                .size(40.dp)
+                .padding(10.dp)
+        )
+    }
+}
