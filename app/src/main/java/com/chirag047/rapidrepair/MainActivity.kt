@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.chirag047.rapidrepair.Presentation.Screens.AddNewVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
 import com.chirag047.rapidrepair.Presentation.Screens.AllowNotification
+import com.chirag047.rapidrepair.Presentation.Screens.ChooseLocation
 import com.chirag047.rapidrepair.Presentation.Screens.ForgetPassword
 import com.chirag047.rapidrepair.Presentation.Screens.HomeScreen
 import com.chirag047.rapidrepair.Presentation.Screens.LoginScreen
@@ -23,6 +24,7 @@ import com.chirag047.rapidrepair.Presentation.Screens.MainScreen
 import com.chirag047.rapidrepair.Presentation.Screens.OnBoardingScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SelectServiceScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicle
+import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicleForServiceScreen
 import com.chirag047.rapidrepair.Presentation.Screens.ServiceScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SignUpScreen
 import com.chirag047.rapidrepair.Presentation.Screens.VehicleScreen
@@ -49,7 +51,7 @@ class MainActivity : ComponentActivity() {
     fun App() {
         val navController = rememberNavController()
 
-        NavHost(navController = navController, startDestination = "WelcomeScreen") {
+        NavHost(navController = navController, startDestination = "MainScreen") {
             composable(route = "WelcomeScreen") {
                 WelcomeScreen(navController)
             }
@@ -91,6 +93,12 @@ class MainActivity : ComponentActivity() {
             }
             composable(route = "SelectServiceScreen") {
                 SelectServiceScreen(navController)
+            }
+            composable(route = "SelectVehicleForServiceScreen") {
+                SelectVehicleForServiceScreen(navController)
+            }
+            composable(route = "ChooseLocation") {
+                ChooseLocation(navController)
             }
         }
     }
