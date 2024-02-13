@@ -20,6 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -34,18 +36,24 @@ import com.chirag047.rapidrepair.R
 
 @Composable
 fun ChooseLocation(navController: NavController) {
-    Box(Modifier.fillMaxSize()) {
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(Color.Gray)
+    ) {
         Column(Modifier.fillMaxWidth()) {
             ActionBarWIthBack(title = "Your Location")
-
         }
         Column(
             Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomEnd)
+                .clip(RoundedCornerShape(25.dp, 25.dp, 0.dp, 0.dp))
+                .shadow(10.dp, RoundedCornerShape(25.dp, 25.dp, 0.dp, 0.dp))
+                .background(MaterialTheme.colorScheme.background)
         ) {
 
-            Spacer(modifier = Modifier.padding(2.dp))
+            Spacer(modifier = Modifier.padding(10.dp))
 
             Row(
                 Modifier
@@ -58,11 +66,36 @@ fun ChooseLocation(navController: NavController) {
 
             }
 
-            Spacer(modifier = Modifier.padding(6.dp))
+            Spacer(modifier = Modifier.padding(10.dp))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp, 0.dp)
+            ) {
+
+                Icon(
+                    painter = painterResource(id = R.drawable.pin_icon),
+                    contentDescription = "",
+                    modifier = Modifier.size(15.dp),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.padding(2.dp))
+                Text(
+                    text = "Ring Road , Besides civil hospital, Nanpura 395004",
+                    fontFamily = FontFamily(Font(R.font.poppins_medium)),
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(10.dp)
+                )
+
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp, 0.dp)
             ) {
 
                 Icon(
@@ -75,12 +108,15 @@ fun ChooseLocation(navController: NavController) {
                 Text(
                     text = "Surat City, India",
                     fontFamily = FontFamily(Font(R.font.poppins_medium)),
-                    textAlign = TextAlign.Center,
                     fontSize = 14.sp,
-                    modifier = Modifier.padding(15.dp, 25.dp)
+                    modifier = Modifier.padding(10.dp)
                 )
 
             }
+
+            Spacer(modifier = Modifier.padding(5.dp))
+
+
             Box(
                 Modifier
                     .wrapContentSize()
@@ -93,10 +129,10 @@ fun ChooseLocation(navController: NavController) {
                         .padding(0.dp, 15.dp, 0.dp, 40.dp)
                 ) {
                     FullWidthButton(
-                        label = "Continue",
+                        label = "Confirm location",
                         color = MaterialTheme.colorScheme.primary
                     ) {
-                        navController.navigate("ChooseLocation")
+                        navController.navigate("AddDetails")
                     }
                 }
             }

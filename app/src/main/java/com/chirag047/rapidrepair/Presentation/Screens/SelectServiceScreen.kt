@@ -89,7 +89,7 @@ fun SelectServiceScreen(navController: NavController) {
                     label = "Continue",
                     color = MaterialTheme.colorScheme.primary
                 ) {
-                   navController.navigate("SelectVehicleForServiceScreen")
+                    navController.navigate("SelectVehicleForServiceScreen")
                 }
             }
         }

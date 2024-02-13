@@ -49,8 +49,8 @@ fun MainScreen(navController: NavController) {
                     VehicleScreen(navController)
                 }
 
-                NavigationItem.ServiceNav.route -> {
-                    ServiceScreen(navController)
+                NavigationItem.TrackNav.route -> {
+                    TrackScreen(navController)
                 }
 
                 NavigationItem.ProfileNav.route -> {
@@ -63,7 +63,7 @@ fun MainScreen(navController: NavController) {
         val list = listOf(
             NavigationItem.HomeNav,
             NavigationItem.VehicleNav,
-            NavigationItem.ServiceNav,
+            NavigationItem.TrackNav,
             NavigationItem.ProfileNav
         )
 
