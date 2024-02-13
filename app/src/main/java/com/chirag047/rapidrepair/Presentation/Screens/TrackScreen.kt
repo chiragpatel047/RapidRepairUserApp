@@ -238,7 +238,6 @@ fun TrackHistorySingle(title: String, desc: String, dataAndTime: String) {
 
             Spacer(modifier = Modifier.padding(4.dp))
 
-
             Text(
                 text = dataAndTime,
                 fontSize = 12.sp,

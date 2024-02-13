@@ -54,7 +54,7 @@ fun MainScreen(navController: NavController) {
                 }
 
                 NavigationItem.ProfileNav.route -> {
-                    //CartNavScreen()
+                    ProfileScreen(navController)
                 }
 
             }
