@@ -149,12 +149,12 @@ fun smallVerticalLine() {
 
     Row(
         modifier = Modifier
-            .height(50.dp)
+            .height(40.dp)
     ) {
         Spacer(modifier = Modifier.padding(12.dp, 0.dp))
         Divider(
             modifier = Modifier
-                .height(50.dp)
+                .height(40.dp)
                 .width(2.dp), color = MaterialTheme.colorScheme.outline
         )
     }

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.chirag047.rapidrepair.Presentation.Screens.AddDetails
 import com.chirag047.rapidrepair.Presentation.Screens.AddNewVehicle
