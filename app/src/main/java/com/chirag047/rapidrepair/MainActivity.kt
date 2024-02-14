@@ -18,6 +18,7 @@ import com.chirag047.rapidrepair.Presentation.Screens.AddNewVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
 import com.chirag047.rapidrepair.Presentation.Screens.AllowNotification
 import com.chirag047.rapidrepair.Presentation.Screens.ChooseLocation
+import com.chirag047.rapidrepair.Presentation.Screens.EditProfile
 import com.chirag047.rapidrepair.Presentation.Screens.ForgetPassword
 import com.chirag047.rapidrepair.Presentation.Screens.HomeScreen
 import com.chirag047.rapidrepair.Presentation.Screens.LoginScreen
@@ -107,6 +108,9 @@ class MainActivity : ComponentActivity() {
             }
             composable(route = "RequestConfirmation") {
                 RequestConfirmation(navController)
+            }
+            composable(route = "EditProfile") {
+                EditProfile(navController)
             }
         }
     }

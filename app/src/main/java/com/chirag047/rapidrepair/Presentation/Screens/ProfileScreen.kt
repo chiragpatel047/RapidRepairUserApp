@@ -104,47 +104,56 @@ fun ProfileScreen(navController: NavController) {
                     icon = R.drawable.profile_filled_icon,
                     title = "My Profile",
                     desc = "Edit your personal information"
-                )
+                ) {
+                    navController.navigate("EditProfile")
+                }
 
                 singleSetting(
                     icon = R.drawable.notification,
                     title = "Notifications",
                     desc = "Updates and much more"
-                )
+                ) {
+
+                }
 
                 singleSetting(
                     icon = R.drawable.edit_icon,
                     title = "Password",
                     desc = "Change your password"
-                )
+                ) {
+
+                }
 
                 singleSetting(
                     icon = R.drawable.termsconditions_icon,
                     title = "Terms & Conditions",
                     desc = "Read our terms and conditions"
-                )
+                ) {
+
+                }
 
                 singleSetting(
                     icon = R.drawable.logout,
                     title = "Logout",
                     desc = ""
-                )
+                ) {
+
+                }
             }
         }
-
 
     }
 }
 
 @Composable
-fun singleSetting(icon: Int, title: String, desc: String) {
+fun singleSetting(icon: Int, title: String, desc: String, onclick: () -> Unit) {
     Row(
         Modifier
             .padding(15.dp, 7.dp)
             .clip(RoundedCornerShape(25.dp))
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .clickable {
-
+                onclick.invoke()
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
