@@ -65,7 +65,9 @@ fun TrackScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.padding(2.dp))
 
-                TrackSingle("Gotham Car Reparation", "Car | Toyata | Innova | Petrol")
+                TrackSingle("Gotham Car Reparation", "Car | Toyata | Innova | Petrol") {
+                    navController.navigate("TrackNowScreen")
+                }
 
                 Spacer(modifier = Modifier.padding(6.dp))
 
@@ -100,14 +102,13 @@ fun TrackScreen(navController: NavController) {
                 )
             }
 
-
         }
     }
 }
 
 
 @Composable
-fun TrackSingle(title: String, desc: String) {
+fun TrackSingle(title: String, desc: String, onclick: () -> Unit) {
     Row(
         Modifier
             .padding(15.dp, 7.dp)
@@ -163,7 +164,9 @@ fun TrackSingle(title: String, desc: String) {
 
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 Button(
-                    onClick = {},
+                    onClick = {
+                        onclick.invoke()
+                    },
                     colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                     modifier = Modifier
                         .padding(15.dp, 10.dp)

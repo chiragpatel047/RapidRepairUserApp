@@ -168,7 +168,6 @@ fun ChangePasswordScreen(navController: NavController) {
                     .padding(20.dp, 10.dp)
                     .border(1.dp, Color.LightGray, RoundedCornerShape(50.dp))
             )
-
         }
 
         Box(

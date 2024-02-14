@@ -35,13 +35,18 @@ import com.chirag047.rapidrepair.R
 
 @Composable
 fun SingleVehicle(icon: Int, title: String, desc: String) {
+
+    val showDropMenu = remember {
+        mutableStateOf(false)
+    }
+
     Row(
         Modifier
             .padding(15.dp, 7.dp)
             .clip(RoundedCornerShape(25.dp))
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .clickable {
-
+                showDropMenu.value = true
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -90,15 +95,8 @@ fun SingleVehicle(icon: Int, title: String, desc: String) {
             )
         }
 
-        Icon(
-            painterResource(id = R.drawable.two_dots_icon),
-            contentDescription = "",
-            tint = MaterialTheme.colorScheme.onSecondaryContainer,
-            modifier = Modifier
-                .size(30.dp)
-                .padding(8.dp)
-                .rotate(90f)
-        )
+        DropDownMenu(showDropMenu.value)
+
         Spacer(modifier = Modifier.padding(5.dp))
 
     }

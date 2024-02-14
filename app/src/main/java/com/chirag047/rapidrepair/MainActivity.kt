@@ -31,6 +31,7 @@ import com.chirag047.rapidrepair.Presentation.Screens.SelectServiceScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicleForServiceScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SignUpScreen
+import com.chirag047.rapidrepair.Presentation.Screens.TrackNowScreen
 import com.chirag047.rapidrepair.Presentation.Screens.TrackScreen
 import com.chirag047.rapidrepair.Presentation.Screens.VehicleScreen
 import com.chirag047.rapidrepair.Presentation.Screens.WelcomeScreen
@@ -119,6 +120,9 @@ class MainActivity : ComponentActivity() {
             }
             composable(route = "ChangePasswordScreen") {
                 ChangePasswordScreen(navController)
+            }
+            composable(route = "TrackNowScreen") {
+                TrackNowScreen(navController)
             }
         }
     }
