@@ -113,7 +113,7 @@ fun ProfileScreen(navController: NavController) {
                     title = "Notifications",
                     desc = "Updates and much more"
                 ) {
-
+                    navController.navigate("NotificationScreen")
                 }
 
                 singleSetting(
@@ -121,7 +121,7 @@ fun ProfileScreen(navController: NavController) {
                     title = "Password",
                     desc = "Change your password"
                 ) {
-
+                    navController.navigate("ChangePasswordScreen")
                 }
 
                 singleSetting(

@@ -116,7 +116,7 @@ fun HomeScreen(navController: NavController) {
                 }
             }
             GrayFilledSimpleButton(imageIcon = R.drawable.notification) {
-
+                navController.navigate("NotificationScreen")
             }
         }
 

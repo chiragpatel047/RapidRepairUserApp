@@ -17,12 +17,14 @@ import com.chirag047.rapidrepair.Presentation.Screens.AddDetails
 import com.chirag047.rapidrepair.Presentation.Screens.AddNewVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
 import com.chirag047.rapidrepair.Presentation.Screens.AllowNotification
+import com.chirag047.rapidrepair.Presentation.Screens.ChangePasswordScreen
 import com.chirag047.rapidrepair.Presentation.Screens.ChooseLocation
 import com.chirag047.rapidrepair.Presentation.Screens.EditProfile
 import com.chirag047.rapidrepair.Presentation.Screens.ForgetPassword
 import com.chirag047.rapidrepair.Presentation.Screens.HomeScreen
 import com.chirag047.rapidrepair.Presentation.Screens.LoginScreen
 import com.chirag047.rapidrepair.Presentation.Screens.MainScreen
+import com.chirag047.rapidrepair.Presentation.Screens.NotificationScreen
 import com.chirag047.rapidrepair.Presentation.Screens.OnBoardingScreen
 import com.chirag047.rapidrepair.Presentation.Screens.RequestConfirmation
 import com.chirag047.rapidrepair.Presentation.Screens.SelectServiceScreen
@@ -111,6 +113,12 @@ class MainActivity : ComponentActivity() {
             }
             composable(route = "EditProfile") {
                 EditProfile(navController)
+            }
+            composable(route = "NotificationScreen") {
+                NotificationScreen(navController)
+            }
+            composable(route = "ChangePasswordScreen") {
+                ChangePasswordScreen(navController)
             }
         }
     }
