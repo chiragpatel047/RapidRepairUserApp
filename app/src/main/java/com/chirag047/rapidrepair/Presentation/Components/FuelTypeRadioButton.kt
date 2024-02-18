@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Presentation.Components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -22,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -48,11 +50,13 @@ fun FuelTypeRadioButton(fuelList: List<String>): Int {
             Column(
                 Modifier
                     .padding(8.dp)
+                    .clip(RoundedCornerShape(25.dp))
                     .border(
                         1.dp,
                         if (index.equals(selectedIndex.value)) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground,
                         RoundedCornerShape(25.dp)
                     )
+                    .background(if (index.equals(selectedIndex.value)) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.background)
                     .clickable {
                         selectedIndex.value = index
                     },

@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -36,8 +37,13 @@ import com.chirag047.rapidrepair.Presentation.Screens.TrackNowScreen
 import com.chirag047.rapidrepair.Presentation.Screens.TrackScreen
 import com.chirag047.rapidrepair.Presentation.Screens.VehicleScreen
 import com.chirag047.rapidrepair.Presentation.Screens.WelcomeScreen
+import com.chirag047.rapidrepair.Presentation.ViewModels.SignUpViewModel
 import com.chirag047.rapidrepair.ui.theme.RapidRepairTheme
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,17 +54,24 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    App()
+                    val firebaseAuth = Firebase.auth
+
+                    if (firebaseAuth.currentUser != null) {
+                        App("MainScreen")
+                    } else {
+                        App("WelcomeScreen")
+                    }
+
                 }
             }
         }
     }
 
     @Composable
-    fun App() {
+    fun App(startScreen: String) {
         val navController = rememberNavController()
 
-        NavHost(navController = navController, startDestination = "MainScreen") {
+        NavHost(navController = navController, startDestination = startScreen) {
             composable(route = "WelcomeScreen") {
                 WelcomeScreen(navController)
             }

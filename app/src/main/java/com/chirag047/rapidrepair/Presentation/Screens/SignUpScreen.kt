@@ -1,5 +1,7 @@
 package com.chirag047.rapidrepair.Presentation.Screens
 
+import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,13 +18,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -39,20 +46,56 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.chirag047.rapidrepair.Common.ResponseType
+import com.chirag047.rapidrepair.Model.UserModel
 import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
 import com.chirag047.rapidrepair.Presentation.Components.SubjectImage
+import com.chirag047.rapidrepair.Presentation.Components.customProgressBar
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldCenterText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsText
 import com.chirag047.rapidrepair.Presentation.Components.textBetweenTwoLines
+import com.chirag047.rapidrepair.Presentation.ViewModels.SignUpViewModel
 import com.chirag047.rapidrepair.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(navController: NavController) {
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    val signUpViewModel: SignUpViewModel = hiltViewModel()
 
+    val result = signUpViewModel.response.collectAsState()
+
+    val showProgressBar = remember {
+        mutableStateOf(false)
+    }
+
+    when (result.value) {
+        is ResponseType.Success -> {
+            showProgressBar.value = false
+            navController.navigate("AllowLocation")
+        }
+
+        is ResponseType.Error -> {
+            showProgressBar.value = false
+            Toast.makeText(LocalContext.current, result.value.errorMsg, Toast.LENGTH_LONG).show()
+        }
+
+        is ResponseType.Loading -> {
+
+        }
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
         Column() {
 
             Spacer(modifier = Modifier.padding(10.dp))
@@ -79,14 +122,16 @@ fun SignUpScreen(navController: NavController) {
 
             textBetweenTwoLines(text = "Register")
 
+            var nameText by remember { mutableStateOf("") }
+            var emailText by remember { mutableStateOf("") }
+            var passwordText by remember { mutableStateOf("") }
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var nameText by remember { mutableStateOf("") }
-                var emailText by remember { mutableStateOf("") }
-                var passwordText by remember { mutableStateOf("") }
+
 
                 TextField(
                     value = nameText,
@@ -203,13 +248,16 @@ fun SignUpScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.padding(10.dp))
 
-
             FullWidthButton(label = "Register", MaterialTheme.colorScheme.primary) {
-                navController.navigate("AllowLocation")
-            }
 
+                showProgressBar.value = true
+                CoroutineScope(Dispatchers.IO).launch {
+                    signUpViewModel.createUser(nameText, emailText, passwordText)
+                }
+            }
             Spacer(modifier = Modifier.padding(40.dp))
         }
+        customProgressBar(show = showProgressBar.value, title = "Wait a moment...")
     }
 }
 

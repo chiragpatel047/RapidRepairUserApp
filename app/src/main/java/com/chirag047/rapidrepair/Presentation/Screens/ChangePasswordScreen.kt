@@ -62,6 +62,7 @@ fun ChangePasswordScreen(navController: NavController) {
             TextField(
                 value = currentPassword,
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 visualTransformation = PasswordVisualTransformation(),
                 onValueChange = { currentPassword = it },
                 textStyle = TextStyle(
@@ -102,6 +103,7 @@ fun ChangePasswordScreen(navController: NavController) {
             TextField(
                 value = newPassword,
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 visualTransformation = PasswordVisualTransformation(),
                 onValueChange = { newPassword = it },
                 textStyle = TextStyle(
@@ -147,7 +149,7 @@ fun ChangePasswordScreen(navController: NavController) {
                     fontSize = 14.sp,
                     fontFamily = FontFamily(Font(R.font.poppins_medium))
                 ),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 onValueChange = { confirmPassword = it },
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.Transparent,

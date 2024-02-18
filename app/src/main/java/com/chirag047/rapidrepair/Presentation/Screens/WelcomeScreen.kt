@@ -27,9 +27,12 @@ import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldCenterText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsCenterText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsText
 import com.chirag047.rapidrepair.R
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun WelcomeScreen(navController: NavController) {
+
 
     Column(modifier = Modifier.fillMaxSize()) {
 
