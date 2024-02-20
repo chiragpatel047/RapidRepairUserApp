@@ -25,19 +25,19 @@ class FirebaseAuthRepository @Inject constructor(
         password: String
     ): Flow<ResponseType<FirebaseUser>> = callbackFlow {
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+        trySend(ResponseType.Loading())
 
-        val userModel = UserModel(firebaseAuth.currentUser!!.uid, userName, email, password, "", "")
-
-        firebaseFirestore.collection("users").document(firebaseAuth.currentUser!!.uid)
-            .set(userModel).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    trySend(ResponseType.Success(firebaseAuth.currentUser!!))
-                } else {
-                    trySend(ResponseType.Error(it.exception!!.message.toString()))
-                }
-
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
+            if (it.isSuccessful) {
+                val userModel =
+                    UserModel(firebaseAuth.currentUser!!.uid, userName, email, password, "", "")
+                firebaseFirestore.collection("users").document(firebaseAuth.currentUser!!.uid)
+                    .set(userModel)
+                trySend(ResponseType.Success(firebaseAuth.currentUser!!))
+            } else {
+                trySend(ResponseType.Error(it.exception!!.message.toString()))
             }
+        }
 
         awaitClose {
             close()

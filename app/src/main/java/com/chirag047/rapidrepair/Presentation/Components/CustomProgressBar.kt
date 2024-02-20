@@ -2,6 +2,9 @@ package com.chirag047.rapidrepair.Presentation.Components
 
 import android.icu.text.CaseMap.Title
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -24,7 +27,10 @@ import com.chirag047.rapidrepair.R
 
 @Composable
 fun customProgressBar(show: Boolean, title: String) {
-    AnimatedVisibility(visible = show) {
+    AnimatedVisibility(
+        visible = show, enter = fadeIn(animationSpec = tween(400)),
+        exit = fadeOut(animationSpec = tween(400))
+    ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Row(
                 Modifier
