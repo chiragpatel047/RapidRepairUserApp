@@ -8,7 +8,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.auth.User
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -16,23 +19,46 @@ class FirebaseAuthRepository @Inject constructor(
     val firebaseAuth: FirebaseAuth,
     val firebaseFirestore: FirebaseFirestore
 ) {
-    suspend fun createUser(
+    fun createUser(
         userName: String,
         email: String,
         password: String
-    ): ResponseType<FirebaseUser> {
+    ): Flow<ResponseType<FirebaseUser>> = callbackFlow {
 
         firebaseAuth.createUserWithEmailAndPassword(email, password).await()
 
         val userModel = UserModel(firebaseAuth.currentUser!!.uid, userName, email, password, "", "")
 
         firebaseFirestore.collection("users").document(firebaseAuth.currentUser!!.uid)
-            .set(userModel).await()
+            .set(userModel).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    trySend(ResponseType.Success(firebaseAuth.currentUser!!))
+                } else {
+                    trySend(ResponseType.Error(it.exception!!.message.toString()))
+                }
 
-        return try {
-            ResponseType.Success(firebaseAuth.currentUser!!)
-        } catch (e: Exception) {
-            ResponseType.Error(e.localizedMessage.toString())
+            }
+
+        awaitClose {
+            close()
         }
+
     }
+
+    fun loginUser(email: String, password: String): Flow<ResponseType<FirebaseUser>> =
+        callbackFlow {
+            trySend(ResponseType.Loading())
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    trySend(ResponseType.Success(it.result.user!!))
+                } else {
+                    trySend(ResponseType.Error(it.exception!!.message.toString()))
+                }
+            }
+            awaitClose {
+                close()
+            }
+
+        }
+
 }

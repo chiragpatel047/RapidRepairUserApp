@@ -32,6 +32,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,6 +65,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -72,28 +74,14 @@ import javax.inject.Inject
 fun SignUpScreen(navController: NavController) {
 
     val signUpViewModel: SignUpViewModel = hiltViewModel()
-
-    val result = signUpViewModel.response.collectAsState()
+    val scope = rememberCoroutineScope()
 
     val showProgressBar = remember {
         mutableStateOf(false)
     }
 
-    when (result.value) {
-        is ResponseType.Success -> {
-            showProgressBar.value = false
-            navController.navigate("AllowLocation")
-        }
-
-        is ResponseType.Error -> {
-            showProgressBar.value = false
-            Toast.makeText(LocalContext.current, result.value.errorMsg, Toast.LENGTH_LONG).show()
-        }
-
-        is ResponseType.Loading -> {
-
-        }
-    }
+    var openMySnackbar = remember { mutableStateOf(false) }
+    var snackBarMsg = remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column() {
@@ -250,14 +238,55 @@ fun SignUpScreen(navController: NavController) {
 
             FullWidthButton(label = "Register", MaterialTheme.colorScheme.primary) {
 
-                showProgressBar.value = true
-                CoroutineScope(Dispatchers.IO).launch {
+                if (nameText.isEmpty()) {
+                    snackBarMsg.value = "Username can't be empty"
+                    openMySnackbar.value = true
+                    return@FullWidthButton
+                }
+
+                if (emailText.isEmpty()) {
+                    snackBarMsg.value = "Email can't be empty"
+                    openMySnackbar.value = true
+                    return@FullWidthButton
+                }
+
+                if (passwordText.isEmpty()) {
+                    snackBarMsg.value = "Password can't be empty"
+                    openMySnackbar.value = true
+                    return@FullWidthButton
+                }
+
+                scope.launch(Dispatchers.Main) {
                     signUpViewModel.createUser(nameText, emailText, passwordText)
+                        .collect { result ->
+                            when (result) {
+                                is ResponseType.Success -> {
+                                    showProgressBar.value = false
+                                    navController.navigate("AllowLocation")
+                                }
+
+                                is ResponseType.Error -> {
+                                    showProgressBar.value = false
+                                    snackBarMsg.value = result.errorMsg.toString()
+                                    openMySnackbar.value = true
+                                }
+
+                                is ResponseType.Loading -> {
+                                    showProgressBar.value = true
+                                }
+                            }
+                        }
                 }
             }
             Spacer(modifier = Modifier.padding(40.dp))
         }
         customProgressBar(show = showProgressBar.value, title = "Wait a moment...")
+
+        SnackbarWithoutScaffold(
+            snackBarMsg.value, openMySnackbar.value, { openMySnackbar.value = it }, Modifier.align(
+                Alignment.BottomCenter
+            )
+        )
     }
 }
 
