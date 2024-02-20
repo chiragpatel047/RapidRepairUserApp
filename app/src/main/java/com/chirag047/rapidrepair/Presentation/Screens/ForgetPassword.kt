@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Presentation.Screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,17 +37,35 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.chirag047.rapidrepair.Common.ResponseType
 import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
 import com.chirag047.rapidrepair.Presentation.Components.SubjectImage
+import com.chirag047.rapidrepair.Presentation.Components.customProgressBar
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldCenterText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsCenterText
 import com.chirag047.rapidrepair.Presentation.Components.textBetweenTwoLines
+import com.chirag047.rapidrepair.Presentation.ViewModels.ForgetPasswordViewModel
 import com.chirag047.rapidrepair.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgetPassword(navController: NavController) {
+
+    val forgetPasswordViewModel: ForgetPasswordViewModel = hiltViewModel()
+
+    val scope = rememberCoroutineScope()
+
+    val showProgressBar = remember {
+        mutableStateOf(false)
+    }
+
+    var openMySnackbar = remember { mutableStateOf(false) }
+    var snackBarMsg = remember { mutableStateOf("") }
+
     Box(modifier = Modifier.fillMaxSize()) {
 
         Column() {
@@ -83,13 +103,14 @@ fun ForgetPassword(navController: NavController) {
 
             textBetweenTwoLines(text = "Forget Password")
 
+            var emailText by remember { mutableStateOf("") }
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                var emailText by remember { mutableStateOf("") }
 
                 TextField(
                     value = emailText,
@@ -125,11 +146,46 @@ fun ForgetPassword(navController: NavController) {
             Spacer(modifier = Modifier.padding(10.dp))
 
             FullWidthButton(label = "Send email", MaterialTheme.colorScheme.primary) {
-//                navController.navigate("")
+                if (emailText.isEmpty()) {
+                    snackBarMsg.value = "Email can't be empty"
+                    openMySnackbar.value = true
+                    return@FullWidthButton
+                }
+
+                scope.launch(Dispatchers.Main) {
+                    forgetPasswordViewModel.sendPasswordResetLink(emailText).collect {
+                        when (it) {
+                            is ResponseType.Success -> {
+                                showProgressBar.value = false
+                                snackBarMsg.value = it.data!!
+                                openMySnackbar.value = true
+                            }
+
+                            is ResponseType.Error -> {
+                                showProgressBar.value = false
+                                snackBarMsg.value = it.errorMsg.toString()
+                                openMySnackbar.value = true
+                            }
+
+                            is ResponseType.Loading -> {
+                                showProgressBar.value = true
+                            }
+                        }
+                    }
+                }
+
             }
 
             Spacer(modifier = Modifier.padding(40.dp))
         }
+
+        customProgressBar(show = showProgressBar.value, title = "Wait a moment...")
+
+        SnackbarWithoutScaffold(
+            snackBarMsg.value, openMySnackbar.value, { openMySnackbar.value = it }, Modifier.align(
+                Alignment.BottomCenter
+            )
+        )
     }
 
 }

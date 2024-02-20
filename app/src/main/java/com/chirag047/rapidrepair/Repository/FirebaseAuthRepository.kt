@@ -61,4 +61,18 @@ class FirebaseAuthRepository @Inject constructor(
 
         }
 
+    fun sendEmailPasswordResetLink(email: String): Flow<ResponseType<String>> = callbackFlow {
+        trySend(ResponseType.Loading())
+        firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
+            if (it.isSuccessful) {
+                trySend(ResponseType.Success("Password reset link is sent to your email."))
+            } else {
+                trySend(ResponseType.Success(it.exception!!.message.toString()))
+            }
+        }
+        awaitClose {
+            close()
+        }
+    }
+
 }
