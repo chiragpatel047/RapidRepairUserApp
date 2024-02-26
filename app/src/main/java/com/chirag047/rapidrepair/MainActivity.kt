@@ -18,7 +18,6 @@ import androidx.navigation.compose.rememberNavController
 import com.chirag047.rapidrepair.Presentation.Screens.AddDetails
 import com.chirag047.rapidrepair.Presentation.Screens.AddNewVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
-import com.chirag047.rapidrepair.Presentation.Screens.AllowNotification
 import com.chirag047.rapidrepair.Presentation.Screens.ChangePasswordScreen
 import com.chirag047.rapidrepair.Presentation.Screens.ChooseLocation
 import com.chirag047.rapidrepair.Presentation.Screens.EditProfile
@@ -57,7 +56,7 @@ class MainActivity : ComponentActivity() {
                     val firebaseAuth = Firebase.auth
 
                     if (firebaseAuth.currentUser != null) {
-                        App("MainScreen")
+                        App("AllowLocation")
                     } else {
                         App("WelcomeScreen")
                     }
@@ -86,9 +85,6 @@ class MainActivity : ComponentActivity() {
             }
             composable(route = "AllowLocation") {
                 AllowLocation(navController)
-            }
-            composable(route = "AllowNotification") {
-                AllowNotification(navController)
             }
             composable(route = "ForgetPassword") {
                 ForgetPassword(navController)
