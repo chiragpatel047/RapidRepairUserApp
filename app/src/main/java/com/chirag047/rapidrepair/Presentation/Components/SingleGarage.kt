@@ -25,13 +25,15 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.chirag047.rapidrepair.Model.CenterModel
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun SingleGarage(navController: NavController) {
+fun SingleGarage(navController: NavController, centerModel: CenterModel) {
     Row(
         Modifier
             .padding(15.dp, 7.dp)
@@ -72,10 +74,29 @@ fun SingleGarage(navController: NavController) {
 
 
         Column {
+
+            poppinsBoldText(
+                contentText = centerModel.centerName!!,
+                size = 14.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp, 15.dp, 10.dp, 2.dp)
+            )
+
+            Text(
+                text = centerModel.centerAddress!!,
+                fontSize = 12.sp,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                fontFamily = FontFamily(Font(R.font.poppins_medium)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp, 0.dp)
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(5.dp, 5.dp, 15.dp, 5.dp),
+                    .padding(0.dp, 5.dp, 15.dp, 0.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Row(
@@ -90,7 +111,7 @@ fun SingleGarage(navController: NavController) {
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        text = "8AM - 5PM",
+                        text = centerModel.centerTime!!,
                         fontSize = 10.sp,
                         modifier = Modifier
                             .padding(0.dp, 6.dp, 0.dp, 5.dp),
@@ -109,7 +130,7 @@ fun SingleGarage(navController: NavController) {
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        text = "4.5",
+                        text = centerModel.centerRating!!,
                         fontSize = 10.sp,
                         modifier = Modifier
                             .padding(0.dp, 7.dp, 0.dp, 5.dp),
@@ -119,21 +140,6 @@ fun SingleGarage(navController: NavController) {
 
             }
 
-            poppinsBoldText(
-                contentText = "Gotham Car Reparation",
-                size = 14.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp, 0.dp)
-            )
-
-            poppinsText(
-                contentText = "House 58, Road 8, Block A Katargaam",
-                size = 12.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp, 0.dp)
-            )
             Spacer(modifier = Modifier.padding(10.dp))
         }
 

@@ -1,5 +1,7 @@
 package com.chirag047.rapidrepair.Presentation.Screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -34,9 +37,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,24 +58,58 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.chirag047.rapidrepair.Common.ResponseType
+import com.chirag047.rapidrepair.Model.CenterModel
 import com.chirag047.rapidrepair.Presentation.Components.FilledCommonCustomButton
 import com.chirag047.rapidrepair.Presentation.Components.FilledCustomButton
 import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
 import com.chirag047.rapidrepair.Presentation.Components.GrayFilledSimpleButton
 import com.chirag047.rapidrepair.Presentation.Components.SearchBar
+import com.chirag047.rapidrepair.Presentation.Components.SearchChatSingle
 import com.chirag047.rapidrepair.Presentation.Components.SingleCardService
 import com.chirag047.rapidrepair.Presentation.Components.SingleGarage
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsText
 import com.chirag047.rapidrepair.Presentation.Components.textWithSeeAllText
+import com.chirag047.rapidrepair.Presentation.ViewModels.HomeScreenViewModel
 import com.chirag047.rapidrepair.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
 
     val scroll = rememberScrollState()
+    val homeScreenViewModel: HomeScreenViewModel = hiltViewModel()
+
+    var centerList = remember {
+        mutableStateOf(mutableListOf<CenterModel>())
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        homeScreenViewModel.getCenter("Surat").collect {
+            when (it) {
+
+                is ResponseType.Success -> {
+                    val list = mutableListOf(CenterModel())
+                    list.clear()
+                    list.addAll(it.data!!)
+                    centerList.value = list
+                }
+
+                is ResponseType.Loading -> {
+
+                }
+
+                is ResponseType.Error -> {
+                    Log.d("FireBaseDataCenterData",it.errorMsg.toString())
+                }
+            }
+        }
+    }
 
     Column(
         Modifier
@@ -226,15 +265,20 @@ fun HomeScreen(navController: NavController) {
 
         }
 
-
         Spacer(modifier = Modifier.padding(4.dp))
         textWithSeeAllText(title = "Near you")
-        SingleGarage(navController)
-        SingleGarage(navController)
-        SingleGarage(navController)
+
+        loadCenters(list = centerList.value, navController = navController)
     }
 
+}
 
+@Composable
+fun loadCenters(list: List<CenterModel>,navController: NavController){
+    list.forEach {
+        Log.d("loadCenterDataCenter",it.toString())
+        SingleGarage(navController, it)
+    }
 }
 
 

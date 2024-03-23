@@ -35,6 +35,7 @@ import com.chirag047.rapidrepair.R
 fun AllowLocation(navController: NavController) {
 
     val activity = LocalContext.current as Activity
+
     val locationPermission = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { permissions ->
@@ -101,7 +102,6 @@ fun AllowLocation(navController: NavController) {
                 )
             }
         }
-
 
         Spacer(modifier = Modifier.padding(5.dp))
 

@@ -54,13 +54,11 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val firebaseAuth = Firebase.auth
-
                     if (firebaseAuth.currentUser != null) {
-                        App("AllowLocation")
+                        App("MainScreen")
                     } else {
                         App("WelcomeScreen")
                     }
-
                 }
             }
         }
