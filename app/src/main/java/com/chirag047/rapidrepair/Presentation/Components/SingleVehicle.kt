@@ -31,10 +31,25 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chirag047.rapidrepair.Model.VehicleModel
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun SingleVehicle(icon: Int, title: String, desc: String) {
+fun SingleVehicle(vehicleModel: VehicleModel) {
+
+    var icon = R.drawable.car_icon
+
+    if (vehicleModel.vehicleType.equals("Car")) {
+        icon = R.drawable.car_icon
+    } else if (vehicleModel.vehicleType.equals("Motorcycle")) {
+        icon = R.drawable.motorcycle_icon
+    } else if (vehicleModel.vehicleType.equals("Rickshaw")) {
+        icon = R.drawable.rickshaw_icon
+    } else if (vehicleModel.vehicleType.equals("Truck")) {
+        icon = R.drawable.truck_icon
+    } else if (vehicleModel.vehicleType.equals("Bus")) {
+        icon = R.drawable.bus_icon
+    }
 
     val showDropMenu = remember {
         mutableStateOf(false)
@@ -67,6 +82,7 @@ fun SingleVehicle(icon: Int, title: String, desc: String) {
                     .background(MaterialTheme.colorScheme.secondary),
             ) {
                 Icon(
+
                     painterResource(id = icon),
                     contentDescription = "",
                     tint = MaterialTheme.colorScheme.onSecondary,
@@ -81,14 +97,14 @@ fun SingleVehicle(icon: Int, title: String, desc: String) {
         Column(Modifier.weight(1f)) {
 
             poppinsBoldText(
-                contentText = title,
+                contentText = vehicleModel.vehicleCompany!! + " " + vehicleModel.vehicleModel!!,
                 size = 14.sp,
                 modifier = Modifier
                     .padding(10.dp, 0.dp)
             )
 
             poppinsText(
-                contentText = desc,
+                contentText = vehicleModel.vehicleColor!! + " | " + vehicleModel.vehicleFuelType + " | " + vehicleModel.vehicleLicensePlate,
                 size = 12.sp,
                 modifier = Modifier
                     .padding(10.dp, 0.dp)

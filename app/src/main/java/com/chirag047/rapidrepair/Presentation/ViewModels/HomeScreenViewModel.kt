@@ -11,7 +11,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(val dataRepository: DataRepository) : ViewModel() {
 
-
     suspend fun getCenter(cityName : String) = dataRepository.getCenters(cityName)
 
 }
