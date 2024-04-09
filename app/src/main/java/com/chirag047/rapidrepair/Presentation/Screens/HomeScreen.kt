@@ -83,7 +83,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController,sharedPreferences: SharedPreferences) {
+fun HomeScreen(navController: NavController, sharedPreferences: SharedPreferences) {
 
     val scroll = rememberScrollState()
     val homeScreenViewModel: HomeScreenViewModel = hiltViewModel()
@@ -94,7 +94,7 @@ fun HomeScreen(navController: NavController,sharedPreferences: SharedPreferences
 
     LaunchedEffect(key1 = Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            homeScreenViewModel.getCenter(sharedPreferences.getString("userCity","")!!)
+            homeScreenViewModel.getCenter(sharedPreferences.getString("userCity", "")!!)
         }
     }
 
@@ -152,8 +152,8 @@ fun HomeScreen(navController: NavController,sharedPreferences: SharedPreferences
                         )
                         Spacer(modifier = Modifier.padding(2.dp))
                         Text(
-                            text = sharedPreferences.getString("userCity","")+
-                            " City, India",
+                            text = sharedPreferences.getString("userCity", "") +
+                                    " City, India",
                             fontWeight = FontWeight.Bold,
                             fontFamily = FontFamily(Font(R.font.poppins_medium)),
                             textAlign = TextAlign.Center,
@@ -280,18 +280,16 @@ fun HomeScreen(navController: NavController,sharedPreferences: SharedPreferences
             textWithSeeAllText(title = "Near you")
 
             loadCenters(list = centerList.value, navController = navController)
+
         }
-
     }
-
-
 }
 
 @Composable
 fun loadCenters(list: List<CenterModel>, navController: NavController) {
-    list.forEach {
-        Log.d("loadCenterDataCenter", it.toString())
-        SingleGarage(navController, it)
+
+    list.forEachIndexed { index, centerModel ->
+        SingleGarage(navController, centerModel)
     }
 }
 

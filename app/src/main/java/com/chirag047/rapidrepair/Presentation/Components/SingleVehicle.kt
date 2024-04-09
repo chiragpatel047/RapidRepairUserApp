@@ -35,7 +35,7 @@ import com.chirag047.rapidrepair.Model.VehicleModel
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun SingleVehicle(vehicleModel: VehicleModel,deleteVehicle :()-> Unit) {
+fun SingleVehicle(vehicleModel: VehicleModel, deleteVehicle: () -> Unit) {
 
     var icon = R.drawable.car_icon
 
@@ -111,7 +111,7 @@ fun SingleVehicle(vehicleModel: VehicleModel,deleteVehicle :()-> Unit) {
             )
         }
 
-        DropDownMenu(showDropMenu.value,deleteVehicle)
+        DropDownMenu(showDropMenu.value, deleteVehicle)
 
         Spacer(modifier = Modifier.padding(5.dp))
 
@@ -119,7 +119,7 @@ fun SingleVehicle(vehicleModel: VehicleModel,deleteVehicle :()-> Unit) {
 }
 
 @Composable
-fun SelectVehicleFromList(vehicleList: List<Vehicle>) {
+fun SelectVehicleFromList(vehicleList: List<VehicleModel>) : Int{
 
     var selectedIndex = remember { mutableStateOf(-1) }
 
@@ -131,6 +131,21 @@ fun SelectVehicleFromList(vehicleList: List<Vehicle>) {
             .verticalScroll(scroll)
     ) {
         vehicleList.forEachIndexed { index, vehicle ->
+
+            var icon = R.drawable.car_icon
+
+            if (vehicle.vehicleType.equals("Car")) {
+                icon = R.drawable.car_icon
+            } else if (vehicle.vehicleType.equals("Motorcycle")) {
+                icon = R.drawable.motorcycle_icon
+            } else if (vehicle.vehicleType.equals("Rickshaw")) {
+                icon = R.drawable.rickshaw_icon
+            } else if (vehicle.vehicleType.equals("Truck")) {
+                icon = R.drawable.truck_icon
+            } else if (vehicle.vehicleType.equals("Bus")) {
+                icon = R.drawable.bus_icon
+            }
+
             Row(
                 Modifier
                     .padding(15.dp, 7.dp)
@@ -158,7 +173,7 @@ fun SelectVehicleFromList(vehicleList: List<Vehicle>) {
                             .background(MaterialTheme.colorScheme.secondary),
                     ) {
                         Icon(
-                            painterResource(id = vehicle.icon),
+                            painterResource(id = icon),
                             contentDescription = "",
                             tint = MaterialTheme.colorScheme.onSecondary,
                             modifier = Modifier
@@ -172,14 +187,14 @@ fun SelectVehicleFromList(vehicleList: List<Vehicle>) {
                 Column(Modifier.weight(1f)) {
 
                     poppinsBoldText(
-                        contentText = vehicle.name,
+                        contentText = vehicle.vehicleCompany!! + " " + vehicle.vehicleModel,
                         size = 14.sp,
                         modifier = Modifier
                             .padding(10.dp, 0.dp)
                     )
 
                     poppinsText(
-                        contentText = vehicle.desc,
+                        contentText = vehicle.vehicleType + " | " + vehicle.vehicleColor + " | " + vehicle.vehicleFuelType,
                         size = 12.sp,
                         modifier = Modifier
                             .padding(10.dp, 0.dp)
@@ -202,6 +217,7 @@ fun SelectVehicleFromList(vehicleList: List<Vehicle>) {
         }
     }
 
+    return selectedIndex.value
 
 }
 

@@ -40,7 +40,7 @@ fun SingleGarage(navController: NavController, centerModel: CenterModel) {
             .clip(RoundedCornerShape(25.dp))
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .clickable {
-                navController.navigate("SelectServiceScreen")
+                navController.navigate("SelectServiceScreen"+ "/${centerModel.centerId}"+ "/${centerModel.centerName}" + "/${centerModel.centerAddress}" )
             },
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -35,7 +35,18 @@ import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun ChooseLocation(navController: NavController) {
+fun ChooseLocation(
+    navController: NavController,
+    corporateId: String,
+    corporateName: String,
+    corporateAddress: String,
+    serviceType: String,
+    vehicleType: String,
+    vehicleCompany: String,
+    vehicleModel: String,
+    vehicleFuelType: String,
+    vehicleLicensePlate: String
+) {
     Box(
         Modifier
             .fillMaxSize()
@@ -111,12 +122,9 @@ fun ChooseLocation(navController: NavController) {
                     fontSize = 14.sp,
                     modifier = Modifier.padding(10.dp)
                 )
-
             }
 
             Spacer(modifier = Modifier.padding(5.dp))
-
-
             Box(
                 Modifier
                     .wrapContentSize()

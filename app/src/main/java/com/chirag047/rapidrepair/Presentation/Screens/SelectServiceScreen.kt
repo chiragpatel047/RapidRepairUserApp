@@ -21,6 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,12 +36,40 @@ import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
 import com.chirag047.rapidrepair.Presentation.Components.SingleCardService
 import com.chirag047.rapidrepair.Presentation.Components.SingleCardServiceRadio
 import com.chirag047.rapidrepair.Presentation.Components.VehicleType
+import com.chirag047.rapidrepair.Presentation.Components.customProgressBar
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldText
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun SelectServiceScreen(navController: NavController) {
+fun SelectServiceScreen(
+    navController: NavController,
+    corporateId: String,
+    corporateName: String,
+    corporateAddress: String
+) {
+
     val scroll = rememberScrollState()
+
+    val selectedIndex = remember {
+        mutableStateOf(-1)
+    }
+
+    val showProgressBar = remember {
+        mutableStateOf(false)
+    }
+
+    var openMySnackbar = remember { mutableStateOf(false) }
+    var snackBarMsg = remember { mutableStateOf("") }
+
+    val vehicleList = listOf<ServiceType>(
+        ServiceType("Flat Tire", R.drawable.flattire_service_icon),
+        ServiceType("Towing Service", R.drawable.towtruck_icon),
+        ServiceType("Engine Heat", R.drawable.engine_service_icon),
+        ServiceType("Battery Jump Start", R.drawable.battery_service_icon),
+        ServiceType("Key Lock Assistance", R.drawable.keys_service_icon),
+        ServiceType("Other Services", R.drawable.services_icon)
+    )
+
     Box(
         Modifier
             .fillMaxWidth()
@@ -48,14 +78,7 @@ fun SelectServiceScreen(navController: NavController) {
             Modifier
                 .fillMaxWidth()
         ) {
-            val vehicleList = listOf<ServiceType>(
-                ServiceType("Flat Tire", R.drawable.flattire_service_icon),
-                ServiceType("Towing Service", R.drawable.towtruck_icon),
-                ServiceType("Engine Heat", R.drawable.engine_service_icon),
-                ServiceType("Battery Jump Start", R.drawable.battery_service_icon),
-                ServiceType("Key Lock Assistance", R.drawable.keys_service_icon),
-                ServiceType("Other Services", R.drawable.services_icon)
-            )
+
 
             ActionBarWIthBack(title = "Request a service")
 
@@ -68,7 +91,7 @@ fun SelectServiceScreen(navController: NavController) {
                     .padding(15.dp, 5.dp, 15.dp, 0.dp)
             )
 
-            SingleCardServiceRadio(list = vehicleList)
+            selectedIndex.value = SingleCardServiceRadio(list = vehicleList)
 
             Spacer(modifier = Modifier.padding(10.dp))
         }
@@ -89,10 +112,26 @@ fun SelectServiceScreen(navController: NavController) {
                     label = "Continue",
                     color = MaterialTheme.colorScheme.primary
                 ) {
-                    navController.navigate("SelectVehicleForServiceScreen")
+                    if (selectedIndex.value.equals(-1)) {
+                        snackBarMsg.value = "Please select service you need"
+                        openMySnackbar.value = true
+                        return@FullWidthButton
+                    }
+
+                    val serviceType = vehicleList.get(selectedIndex.value)
+
+                    navController.navigate("SelectVehicleForServiceScreen" + "/$corporateId" + "/$corporateName" + "/$corporateAddress" + "/$serviceType")
                 }
             }
         }
+
+        customProgressBar(show = showProgressBar.value, title = "Wait a moment...")
+
+        SnackbarWithoutScaffold(
+            snackBarMsg.value, openMySnackbar.value, { openMySnackbar.value = it }, Modifier.align(
+                Alignment.BottomCenter
+            )
+        )
     }
 }
 

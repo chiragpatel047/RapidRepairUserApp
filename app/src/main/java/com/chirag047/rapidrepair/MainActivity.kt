@@ -57,18 +57,19 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val firebaseAuth = Firebase.auth
-                    val sharePreferences = getSharedPreferences("userDetailsPref",Context.MODE_PRIVATE)
-                    val isFilledData = sharePreferences.getBoolean("isFilled",false)
+                    val sharePreferences =
+                        getSharedPreferences("userDetailsPref", Context.MODE_PRIVATE)
+                    val isFilledData = sharePreferences.getBoolean("isFilled", false)
 
                     if (firebaseAuth.currentUser != null) {
 
-                        if(isFilledData){
-                            App("MainScreen",sharePreferences)
-                        }else{
-                            App("SelectCityScreen",sharePreferences)
+                        if (isFilledData) {
+                            App("MainScreen", sharePreferences)
+                        } else {
+                            App("SelectCityScreen", sharePreferences)
                         }
                     } else {
-                        App("WelcomeScreen",sharePreferences)
+                        App("WelcomeScreen", sharePreferences)
                     }
                 }
             }
@@ -76,7 +77,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun App(startScreen: String,sharedPreferences: SharedPreferences) {
+    fun App(startScreen: String, sharedPreferences: SharedPreferences) {
         val navController = rememberNavController()
 
         NavHost(navController = navController, startDestination = startScreen) {
@@ -87,10 +88,10 @@ class MainActivity : ComponentActivity() {
                 OnBoardingScreen(navController)
             }
             composable(route = "SignUpScreen") {
-                SignUpScreen(navController,sharedPreferences)
+                SignUpScreen(navController, sharedPreferences)
             }
             composable(route = "LoginScreen") {
-                LoginScreen(navController,sharedPreferences)
+                LoginScreen(navController, sharedPreferences)
             }
             composable(route = "AllowLocation") {
                 AllowLocation(navController)
@@ -99,26 +100,62 @@ class MainActivity : ComponentActivity() {
                 ForgetPassword(navController)
             }
             composable(route = "SelectCityScreen") {
-                SelectCityScreen(navController,sharedPreferences)
+                SelectCityScreen(navController, sharedPreferences)
             }
             composable(route = "SelectVehicle") {
                 SelectVehicle(navController)
             }
             composable(route = "MainScreen") {
-                MainScreen(navController,sharedPreferences)
+                MainScreen(navController, sharedPreferences)
             }
 
             composable(route = "AddNewVehicle") {
                 AddNewVehicle(navController)
             }
-            composable(route = "SelectServiceScreen") {
-                SelectServiceScreen(navController)
+            composable(route = "SelectServiceScreen" + "/{corporateId}/{corporateName}/{corporateAddress}") {
+                val corporateId = it.arguments?.getString("corporateId")!!
+                val corporateName = it.arguments?.getString("corporateName")!!
+                val corporateAddress = it.arguments?.getString("corporateAddress")!!
+
+                SelectServiceScreen(
+                    navController, corporateId, corporateName,
+                    corporateAddress
+                )
             }
-            composable(route = "SelectVehicleForServiceScreen") {
-                SelectVehicleForServiceScreen(navController)
+            composable(route = "SelectVehicleForServiceScreen" + "/{corporateId}/{corporateName}/{corporateAddress}/{serviceType}") {
+                val corporateId = it.arguments?.getString("corporateId")!!
+                val corporateName = it.arguments?.getString("corporateName")!!
+                val corporateAddress = it.arguments?.getString("corporateAddress")!!
+                val serviceType = it.arguments?.getString("serviceType")!!
+                SelectVehicleForServiceScreen(
+                    navController, corporateId, corporateName,
+                    corporateAddress, serviceType
+                )
             }
-            composable(route = "ChooseLocation") {
-                ChooseLocation(navController)
+            composable(route = "ChooseLocation" + "/{corporateId}/{corporateName}/{corporateAddress}/{serviceType}/{vehicleType}/{vehicleCompany}/{vehicleModel}/{vehicleFuelType}/{vehicleLicensePlate}") {
+
+                val corporateId = it.arguments?.getString("corporateId")!!
+                val corporateName = it.arguments?.getString("corporateName")!!
+                val corporateAddress = it.arguments?.getString("corporateAddress")!!
+                val serviceType = it.arguments?.getString("serviceType")!!
+                val vehicleType = it.arguments?.getString("vehicleType")!!
+                val vehicleCompany = it.arguments?.getString("vehicleCompany")!!
+                val vehicleModel = it.arguments?.getString("vehicleModel")!!
+                val vehicleFuelType = it.arguments?.getString("vehicleFuelType")!!
+                val vehicleLicensePlate = it.arguments?.getString("vehicleLicensePlate")!!
+
+                ChooseLocation(
+                    navController,
+                    corporateId,
+                    corporateName,
+                    corporateAddress,
+                    serviceType,
+                    vehicleType,
+                    vehicleCompany,
+                    vehicleModel,
+                    vehicleFuelType,
+                    vehicleLicensePlate
+                )
             }
             composable(route = "AddDetails") {
                 AddDetails(navController)

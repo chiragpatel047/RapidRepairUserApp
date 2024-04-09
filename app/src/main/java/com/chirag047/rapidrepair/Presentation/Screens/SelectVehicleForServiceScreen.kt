@@ -15,43 +15,88 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.chirag047.rapidrepair.Common.ResponseType
+import com.chirag047.rapidrepair.Model.VehicleModel
 import com.chirag047.rapidrepair.Presentation.Components.ActionBarWIthBack
 import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
 import com.chirag047.rapidrepair.Presentation.Components.SelectVehicleFromList
 import com.chirag047.rapidrepair.Presentation.Components.Vehicle
+import com.chirag047.rapidrepair.Presentation.Components.customProgressBar
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldCenterText
+import com.chirag047.rapidrepair.Presentation.ViewModels.SelectVehicleForServiceViewModel
 import com.chirag047.rapidrepair.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
-fun SelectVehicleForServiceScreen(navController: NavController) {
+fun SelectVehicleForServiceScreen(
+    navController: NavController, corporateId: String, corporateName: String,
+    corporateAddress: String, serviceType: String
+) {
+
+    val selectVehicleForServiceViewModel: SelectVehicleForServiceViewModel = hiltViewModel()
+
+    val vehicleList = remember {
+        mutableStateOf(mutableListOf(VehicleModel()))
+    }
+
+    val selectedCarListIndex = remember {
+        mutableStateOf(-1)
+    }
+
+    val showProgressBar = remember {
+        mutableStateOf(false)
+    }
+
+    var openMySnackbar = remember { mutableStateOf(false) }
+    var snackBarMsg = remember { mutableStateOf("") }
+
+    LaunchedEffect(key1 = Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            selectVehicleForServiceViewModel.getMyVehicle()
+        }
+    }
+
+    val state = selectVehicleForServiceViewModel.vehicleList.collectAsState()
 
     Box(Modifier.fillMaxSize()) {
 
         Column(Modifier.fillMaxSize()) {
 
-            val vehicleList = listOf<Vehicle>(
-                Vehicle(
-                    R.drawable.car_icon, "Maruti Ertiga", "Car | Toyata | Innova | Petrol"
-                ),
-                Vehicle(
-                    R.drawable.motorcycle_icon, "MT15", "Bike | Yamaha | Sports | Petrol"
-                ),
-                Vehicle(
-                    R.drawable.car_icon, "Nexon", "Car | TATA | EV | Battery"
-                )
-
-            )
-
             ActionBarWIthBack(title = "Choose vehicle")
 
-            SelectVehicleFromList(vehicleList)
+            when (state.value) {
+                is ResponseType.Error -> {
+
+                }
+
+                is ResponseType.Loading -> {
+
+                }
+
+                is ResponseType.Success -> {
+                    val list = mutableListOf<VehicleModel>()
+                    list.clear()
+
+                    list.addAll(state.value.data!!)
+                    vehicleList.value = list
+
+                    selectedCarListIndex.value = SelectVehicleFromList(vehicleList.value)
+                }
+            }
         }
 
         Column(
@@ -89,13 +134,26 @@ fun SelectVehicleForServiceScreen(navController: NavController) {
                         label = "Continue",
                         color = MaterialTheme.colorScheme.primary
                     ) {
-                        navController.navigate("ChooseLocation")
+                        if (selectedCarListIndex.value.equals(-1)) {
+                            snackBarMsg.value = "Please select vehicle"
+                            openMySnackbar.value = true
+                            return@FullWidthButton
+                        }
+
+                        val selectedVehicle = vehicleList.value.get(selectedCarListIndex.value)
+                        navController.navigate("ChooseLocation" + "/$corporateId" + "/$corporateName" + "/$corporateAddress" + "/$serviceType" + "/${selectedVehicle.vehicleType}" + "/${selectedVehicle.vehicleCompany}" + "/${selectedVehicle.vehicleModel}" + "/${selectedVehicle.vehicleFuelType}" + "/${selectedVehicle.vehicleLicensePlate}")
+
                     }
                 }
             }
         }
 
+        customProgressBar(show = showProgressBar.value, title = "Wait a moment...")
+
+        SnackbarWithoutScaffold(
+            snackBarMsg.value, openMySnackbar.value, { openMySnackbar.value = it }, Modifier.align(
+                Alignment.BottomCenter
+            )
+        )
     }
-
-
 }
