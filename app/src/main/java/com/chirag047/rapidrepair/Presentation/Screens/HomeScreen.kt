@@ -94,7 +94,7 @@ fun HomeScreen(navController: NavController,sharedPreferences: SharedPreferences
 
     LaunchedEffect(key1 = Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            homeScreenViewModel.getCenter("Surat")
+            homeScreenViewModel.getCenter(sharedPreferences.getString("userCity","")!!)
         }
     }
 

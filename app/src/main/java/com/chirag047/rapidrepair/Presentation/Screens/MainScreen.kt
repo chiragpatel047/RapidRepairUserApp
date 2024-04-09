@@ -161,7 +161,7 @@ fun navApp(bottomNavController: NavHostController, navController: NavController,
             HomeScreen(navController,sharedPreferences)
         }
         composable(route = "VehicleScreen") {
-            VehicleScreen(navController)
+            VehicleScreen(navController,bottomNavController)
         }
         composable(route = "TrackScreen") {
             TrackScreen(navController)

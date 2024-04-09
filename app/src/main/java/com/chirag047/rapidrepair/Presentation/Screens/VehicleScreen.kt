@@ -19,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.Font
@@ -31,6 +32,7 @@ import androidx.navigation.NavController
 import com.chirag047.rapidrepair.Common.ResponseType
 import com.chirag047.rapidrepair.Model.VehicleModel
 import com.chirag047.rapidrepair.Presentation.Components.SingleVehicle
+import com.chirag047.rapidrepair.Presentation.Components.Vehicle
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldCenterText
 import com.chirag047.rapidrepair.Presentation.ViewModels.VehicleScreenViewModel
 import com.chirag047.rapidrepair.R
@@ -39,9 +41,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun VehicleScreen(navController: NavController) {
+fun VehicleScreen(navController: NavController,parentNavController: NavController) {
 
     val vehicleScreenViewModel: VehicleScreenViewModel = hiltViewModel()
+
+    val scope = rememberCoroutineScope()
 
     val vehicleList = remember {
         mutableStateOf(mutableListOf(VehicleModel()))
@@ -88,7 +92,8 @@ fun VehicleScreen(navController: NavController) {
                             .fillMaxWidth()
                             .padding(15.dp)
                     )
-                    loadVehicles(vehicleList.value)
+
+                    loadVehicles(vehicleList.value,vehicleScreenViewModel)
                 }
             }
         }
@@ -112,9 +117,27 @@ fun VehicleScreen(navController: NavController) {
 }
 
 @Composable
-fun loadVehicles(vehicleList: List<VehicleModel>) {
+fun loadVehicles(vehicleList: List<VehicleModel>,vehicleScreenViewModel : VehicleScreenViewModel) {
 
-    vehicleList.forEach {
-        SingleVehicle(it)
+    val scope = rememberCoroutineScope()
+
+    vehicleList.forEachIndexed { index, vehicleModel ->
+        SingleVehicle(vehicleModel){
+            scope.launch(Dispatchers.Main) {
+                vehicleScreenViewModel.deleteVehicle(vehicleModel.vehicleId!!).collect{
+                    when(it){
+                        is ResponseType.Error -> {
+
+                        }
+                        is ResponseType.Loading -> {
+
+                        }
+                        is ResponseType.Success -> {
+
+                        }
+                    }
+                }
+            }
+        }
     }
 }

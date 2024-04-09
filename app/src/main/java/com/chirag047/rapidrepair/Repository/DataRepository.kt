@@ -18,10 +18,11 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
 
         trySend(ResponseType.Loading())
 
-        firestore.collection("centers").addSnapshotListener { value, error ->
-            Log.d("getCenterRequestNew", "newRequest")
-            trySend(ResponseType.Success(value!!.toObjects(CenterModel::class.java)))
-        }
+        firestore.collection("centers").whereEqualTo("centerCity", cityName)
+            .addSnapshotListener { value, error ->
+                Log.d("getCenterRequestNew", "newRequest")
+                trySend(ResponseType.Success(value!!.toObjects(CenterModel::class.java)))
+            }
         awaitClose() {
             close()
         }
@@ -63,6 +64,25 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
                 close()
             }
         }
+
+    suspend fun deleteMyVehicle(vehicleId: String): Flow<ResponseType<String>> = callbackFlow {
+        trySend(ResponseType.Loading())
+
+        firestore.collection("users")
+            .document(auth.currentUser!!.uid)
+            .collection("vehicles")
+            .document(vehicleId).delete().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    trySend(ResponseType.Success("Vehicle deleted"))
+                } else {
+                    trySend(ResponseType.Error("Something went wrong"))
+                }
+            }
+        awaitClose {
+            close()
+        }
+    }
+
 
     suspend fun updateUserCity(city: String): Flow<ResponseType<String>> =
         callbackFlow {

@@ -35,7 +35,7 @@ import com.chirag047.rapidrepair.Model.VehicleModel
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun SingleVehicle(vehicleModel: VehicleModel) {
+fun SingleVehicle(vehicleModel: VehicleModel,deleteVehicle :()-> Unit) {
 
     var icon = R.drawable.car_icon
 
@@ -111,7 +111,7 @@ fun SingleVehicle(vehicleModel: VehicleModel) {
             )
         }
 
-        DropDownMenu(showDropMenu.value)
+        DropDownMenu(showDropMenu.value,deleteVehicle)
 
         Spacer(modifier = Modifier.padding(5.dp))
 

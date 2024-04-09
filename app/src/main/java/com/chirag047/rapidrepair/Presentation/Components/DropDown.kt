@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun DropDownMenu(show: Boolean) {
+fun DropDownMenu(show: Boolean,deleteVehicle : ()-> Unit) {
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(show) }
 
@@ -52,18 +52,7 @@ fun DropDownMenu(show: Boolean) {
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        "Edit",
-                        fontFamily = FontFamily(Font(R.font.poppins_medium)),
-                        fontSize = 12.sp
-                    )
-                },
-                onClick = {
 
-                }
-            )
             DropdownMenuItem(
                 text = {
                     Text(
@@ -73,7 +62,7 @@ fun DropDownMenu(show: Boolean) {
                     )
                 },
                 onClick = {
-
+                    deleteVehicle.invoke()
                 }
             )
         }

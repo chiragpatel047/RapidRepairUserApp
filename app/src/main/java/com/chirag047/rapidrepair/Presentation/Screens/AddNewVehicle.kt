@@ -374,6 +374,7 @@ fun AddNewVehicle(navController: NavController) {
 
                             }
                             is ResponseType.Success -> {
+
                                 snackBarMsg.value = it.data!!
                                 openMySnackbar.value = true
                             }

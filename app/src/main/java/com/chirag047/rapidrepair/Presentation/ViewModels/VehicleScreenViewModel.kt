@@ -26,4 +26,7 @@ class VehicleScreenViewModel @Inject constructor(val dataRepository: DataReposit
             }
         }
     }
+
+    suspend fun deleteVehicle(vehicleId : String) = dataRepository.deleteMyVehicle(vehicleId)
+
 }

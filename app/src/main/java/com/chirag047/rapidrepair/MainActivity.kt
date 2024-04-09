@@ -107,15 +107,7 @@ class MainActivity : ComponentActivity() {
             composable(route = "MainScreen") {
                 MainScreen(navController,sharedPreferences)
             }
-            composable(route = "HomeScreen") {
-                HomeScreen(navController,sharedPreferences)
-            }
-            composable(route = "VehicleScreen") {
-                VehicleScreen(navController)
-            }
-            composable(route = "TrackScreen") {
-                TrackScreen(navController)
-            }
+
             composable(route = "AddNewVehicle") {
                 AddNewVehicle(navController)
             }
