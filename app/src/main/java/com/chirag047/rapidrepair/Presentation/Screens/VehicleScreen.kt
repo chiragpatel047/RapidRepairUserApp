@@ -41,7 +41,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun VehicleScreen(navController: NavController,parentNavController: NavController) {
+fun VehicleScreen(navController: NavController, parentNavController: NavController) {
 
     val vehicleScreenViewModel: VehicleScreenViewModel = hiltViewModel()
 
@@ -93,7 +93,7 @@ fun VehicleScreen(navController: NavController,parentNavController: NavControlle
                             .padding(15.dp)
                     )
 
-                    loadVehicles(vehicleList.value,vehicleScreenViewModel)
+                    loadVehicles(vehicleList.value, vehicleScreenViewModel)
                 }
             }
         }
@@ -116,22 +116,25 @@ fun VehicleScreen(navController: NavController,parentNavController: NavControlle
     }
 }
 
+
 @Composable
-fun loadVehicles(vehicleList: List<VehicleModel>,vehicleScreenViewModel : VehicleScreenViewModel) {
+fun loadVehicles(vehicleList: List<VehicleModel>, vehicleScreenViewModel: VehicleScreenViewModel) {
 
     val scope = rememberCoroutineScope()
 
     vehicleList.forEachIndexed { index, vehicleModel ->
-        SingleVehicle(vehicleModel){
+        SingleVehicle(vehicleModel) {
             scope.launch(Dispatchers.Main) {
-                vehicleScreenViewModel.deleteVehicle(vehicleModel.vehicleId!!).collect{
-                    when(it){
+                vehicleScreenViewModel.deleteVehicle(vehicleModel.vehicleId!!).collect {
+                    when (it) {
                         is ResponseType.Error -> {
 
                         }
+
                         is ResponseType.Loading -> {
 
                         }
+
                         is ResponseType.Success -> {
 
                         }
