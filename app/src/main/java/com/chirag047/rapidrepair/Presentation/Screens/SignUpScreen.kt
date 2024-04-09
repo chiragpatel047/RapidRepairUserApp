@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Presentation.Screens
 
+import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -71,7 +72,7 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreen(navController: NavController) {
+fun SignUpScreen(navController: NavController,sharedPreferences: SharedPreferences) {
 
     val signUpViewModel: SignUpViewModel = hiltViewModel()
     val scope = rememberCoroutineScope()
@@ -262,7 +263,17 @@ fun SignUpScreen(navController: NavController) {
                             when (result) {
                                 is ResponseType.Success -> {
                                     showProgressBar.value = false
-                                    navController.navigate("AllowLocation")
+
+                                    navController.popBackStack()
+                                    navController.popBackStack()
+                                    navController.popBackStack()
+                                    navController.popBackStack()
+                                    navController.popBackStack()
+
+                                    sharedPreferences.edit().putString("userName",nameText).apply()
+                                    sharedPreferences.edit().putString("userEmail",emailText).apply()
+
+                                    navController.navigate("SelectCityScreen")
                                 }
 
                                 is ResponseType.Error -> {

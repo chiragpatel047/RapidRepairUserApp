@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Presentation.Screens
 
+import android.content.SharedPreferences
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,7 +41,7 @@ import com.chirag047.rapidrepair.Presentation.Components.poppinsText
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController,sharedPreferences: SharedPreferences) {
     Box(Modifier.fillMaxSize()) {
 
         Column(Modifier.fillMaxWidth()) {
@@ -51,7 +52,7 @@ fun ProfileScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(15.dp)
             )
-
+            
             val scroll = rememberScrollState()
             Column(
                 Modifier
@@ -78,7 +79,7 @@ fun ProfileScreen(navController: NavController) {
 
                     Column() {
                         Text(
-                            text = "Jon snow",
+                            text = sharedPreferences.getString("userName","")!!,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             fontFamily = FontFamily(Font(R.font.poppins_medium)),
@@ -87,7 +88,7 @@ fun ProfileScreen(navController: NavController) {
                                 .padding(10.dp, 0.dp)
                         )
                         Text(
-                            text = "jonesnow0806@gmail.com",
+                            text = sharedPreferences.getString("userEmail","")!!,
                             fontSize = 14.sp,
                             fontFamily = FontFamily(Font(R.font.poppins_medium)),
                             modifier = Modifier
@@ -149,7 +150,6 @@ fun ProfileScreen(navController: NavController) {
                 }
             }
         }
-
     }
 }
 

@@ -3,6 +3,7 @@ package com.chirag047.rapidrepair.Repository
 import android.util.Log
 import com.chirag047.rapidrepair.Common.ResponseType
 import com.chirag047.rapidrepair.Model.CenterModel
+import com.chirag047.rapidrepair.Model.UserModel
 import com.chirag047.rapidrepair.Model.VehicleModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -62,4 +63,34 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
                 close()
             }
         }
+
+    suspend fun updateUserCity(city: String): Flow<ResponseType<String>> =
+        callbackFlow {
+            trySend(ResponseType.Loading())
+
+            firestore.collection("users")
+                .document(auth.currentUser!!.uid)
+                .update("city", city).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        trySend(ResponseType.Success("Added"))
+                    }
+                }
+            awaitClose {
+                close()
+            }
+        }
+
+
+    suspend fun getUserDetails(): Flow<ResponseType<UserModel?>> = callbackFlow {
+        trySend(ResponseType.Loading())
+
+        firestore.collection("users")
+            .document(auth.currentUser!!.uid).addSnapshotListener { value, error ->
+                trySend(ResponseType.Success(value!!.toObject(UserModel::class.java)))
+            }
+        awaitClose {
+            close()
+        }
+    }
+
 }

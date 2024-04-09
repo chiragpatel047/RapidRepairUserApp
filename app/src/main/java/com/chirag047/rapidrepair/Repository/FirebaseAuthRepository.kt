@@ -30,7 +30,7 @@ class FirebaseAuthRepository @Inject constructor(
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
                 val userModel =
-                    UserModel(firebaseAuth.currentUser!!.uid, userName, email, password, "", "")
+                    UserModel(firebaseAuth.currentUser!!.uid, userName, email, password, "", "","")
                 firebaseFirestore.collection("users").document(firebaseAuth.currentUser!!.uid)
                     .set(userModel)
                 trySend(ResponseType.Success(firebaseAuth.currentUser!!))

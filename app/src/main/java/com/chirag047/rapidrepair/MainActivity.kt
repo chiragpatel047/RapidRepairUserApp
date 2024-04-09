@@ -1,5 +1,7 @@
 package com.chirag047.rapidrepair
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,6 +30,7 @@ import com.chirag047.rapidrepair.Presentation.Screens.MainScreen
 import com.chirag047.rapidrepair.Presentation.Screens.NotificationScreen
 import com.chirag047.rapidrepair.Presentation.Screens.OnBoardingScreen
 import com.chirag047.rapidrepair.Presentation.Screens.RequestConfirmation
+import com.chirag047.rapidrepair.Presentation.Screens.SelectCityScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SelectServiceScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicleForServiceScreen
@@ -54,10 +57,18 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val firebaseAuth = Firebase.auth
+                    val sharePreferences = getSharedPreferences("userDetailsPref",Context.MODE_PRIVATE)
+                    val isFilledData = sharePreferences.getBoolean("isFilled",false)
+
                     if (firebaseAuth.currentUser != null) {
-                        App("MainScreen")
+
+                        if(isFilledData){
+                            App("MainScreen",sharePreferences)
+                        }else{
+                            App("SelectCityScreen",sharePreferences)
+                        }
                     } else {
-                        App("WelcomeScreen")
+                        App("WelcomeScreen",sharePreferences)
                     }
                 }
             }
@@ -65,7 +76,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun App(startScreen: String) {
+    fun App(startScreen: String,sharedPreferences: SharedPreferences) {
         val navController = rememberNavController()
 
         NavHost(navController = navController, startDestination = startScreen) {
@@ -76,10 +87,10 @@ class MainActivity : ComponentActivity() {
                 OnBoardingScreen(navController)
             }
             composable(route = "SignUpScreen") {
-                SignUpScreen(navController)
+                SignUpScreen(navController,sharedPreferences)
             }
             composable(route = "LoginScreen") {
-                LoginScreen(navController)
+                LoginScreen(navController,sharedPreferences)
             }
             composable(route = "AllowLocation") {
                 AllowLocation(navController)
@@ -87,14 +98,17 @@ class MainActivity : ComponentActivity() {
             composable(route = "ForgetPassword") {
                 ForgetPassword(navController)
             }
+            composable(route = "SelectCityScreen") {
+                SelectCityScreen(navController,sharedPreferences)
+            }
             composable(route = "SelectVehicle") {
                 SelectVehicle(navController)
             }
             composable(route = "MainScreen") {
-                MainScreen(navController)
+                MainScreen(navController,sharedPreferences)
             }
             composable(route = "HomeScreen") {
-                HomeScreen(navController)
+                HomeScreen(navController,sharedPreferences)
             }
             composable(route = "VehicleScreen") {
                 VehicleScreen(navController)

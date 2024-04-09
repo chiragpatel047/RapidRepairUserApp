@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Presentation.Screens
 
+import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
@@ -82,7 +83,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController,sharedPreferences: SharedPreferences) {
 
     val scroll = rememberScrollState()
     val homeScreenViewModel: HomeScreenViewModel = hiltViewModel()
@@ -115,7 +116,7 @@ fun HomeScreen(navController: NavController) {
             }
 
             is ResponseType.Error -> {
-                Log.d("FireBaseDataCenterData",state.value.errorMsg.toString())
+                Log.d("FireBaseDataCenterData", state.value.errorMsg.toString())
             }
         }
 
@@ -151,7 +152,8 @@ fun HomeScreen(navController: NavController) {
                         )
                         Spacer(modifier = Modifier.padding(2.dp))
                         Text(
-                            text = "Surat City, India",
+                            text = sharedPreferences.getString("userCity","")+
+                            " City, India",
                             fontWeight = FontWeight.Bold,
                             fontFamily = FontFamily(Font(R.font.poppins_medium)),
                             textAlign = TextAlign.Center,
@@ -286,9 +288,9 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun loadCenters(list: List<CenterModel>,navController: NavController){
+fun loadCenters(list: List<CenterModel>, navController: NavController) {
     list.forEach {
-        Log.d("loadCenterDataCenter",it.toString())
+        Log.d("loadCenterDataCenter", it.toString())
         SingleGarage(navController, it)
     }
 }

@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Presentation.Screens
 
+import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
@@ -75,7 +76,7 @@ import com.chirag047.rapidrepair.Presentation.Components.customProgressBar as cu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController,sharedPreferences: SharedPreferences) {
 
     val loginViewModel: LoginViewModel = hiltViewModel()
 
@@ -228,9 +229,41 @@ fun LoginScreen(navController: NavController) {
                     loginViewModel.loginUser(emailText, passwordText).collect { result ->
                         when (result) {
                             is ResponseType.Success -> {
-                                showProgressBar.value = false
-                                navController.navigate("AllowLocation")
-                                Log.d("UpdateCurrentState", "success")
+
+                                loginViewModel.getUserDetails().collect {
+                                    when (it) {
+                                        is ResponseType.Error -> {
+
+                                        }
+
+                                        is ResponseType.Loading -> {
+
+                                        }
+
+                                        is ResponseType.Success -> {
+                                            showProgressBar.value = false
+
+                                            navController.popBackStack()
+                                            navController.popBackStack()
+                                            navController.popBackStack()
+                                            navController.popBackStack()
+                                            navController.popBackStack()
+
+                                            if (it.data!!.city.equals("")) {
+                                                navController.navigate("SelectCityScreen")
+                                            } else {
+
+                                                sharedPreferences.edit().putString("userName",it.data.userName).apply()
+                                                sharedPreferences.edit().putString("userEmail",it.data.email).apply()
+                                                sharedPreferences.edit().putString("userCity", it.data.city).apply()
+                                                sharedPreferences.edit().putBoolean("isFilled",true).apply()
+
+                                                navController.navigate("AllowLocation")
+                                            }
+                                        }
+                                    }
+                                }
+
                             }
 
                             is ResponseType.Error -> {

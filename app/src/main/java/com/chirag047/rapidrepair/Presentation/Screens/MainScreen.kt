@@ -2,6 +2,7 @@ package com.chirag047.rapidrepair.Presentation.Screens
 
 import android.Manifest
 import android.app.Activity
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -47,7 +48,7 @@ import com.chirag047.rapidrepair.Presentation.Components.NavigationItem
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun MainScreen(navController: NavController) {
+fun MainScreen(navController: NavController,sharedPreferences: SharedPreferences) {
 
     val list = listOf(
         NavigationItem.HomeNav,
@@ -92,7 +93,7 @@ fun MainScreen(navController: NavController) {
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            navApp(bottomNavController, navController)
+            navApp(bottomNavController, navController,sharedPreferences)
         }
         bottomNavigationCustom(bottomNavController, list = list)
     }
@@ -153,11 +154,11 @@ fun bottomNavigationCustom(navController: NavController, list: List<NavigationIt
 }
 
 @Composable
-fun navApp(bottomNavController: NavHostController, navController: NavController) {
+fun navApp(bottomNavController: NavHostController, navController: NavController,sharedPreferences: SharedPreferences) {
 
     NavHost(navController = bottomNavController, startDestination = "HomeScreen") {
         composable(route = "HomeScreen") {
-            HomeScreen(navController)
+            HomeScreen(navController,sharedPreferences)
         }
         composable(route = "VehicleScreen") {
             VehicleScreen(navController)
@@ -166,7 +167,7 @@ fun navApp(bottomNavController: NavHostController, navController: NavController)
             TrackScreen(navController)
         }
         composable(route = "ProfileScreen") {
-            ProfileScreen(navController)
+            ProfileScreen(navController,sharedPreferences)
         }
     }
 }

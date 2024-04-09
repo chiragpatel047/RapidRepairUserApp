@@ -79,6 +79,7 @@ fun VehicleScreen(navController: NavController) {
                     Modifier
                         .fillMaxWidth()
                         .verticalScroll(scroll)
+
                 ) {
                     poppinsBoldCenterText(
                         contentText = "My vehicle",
