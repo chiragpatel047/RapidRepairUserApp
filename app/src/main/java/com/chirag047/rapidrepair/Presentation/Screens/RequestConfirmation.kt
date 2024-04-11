@@ -23,6 +23,9 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,12 +43,19 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.chirag047.rapidrepair.Common.ResponseType
+import com.chirag047.rapidrepair.Model.OrderModel
 import com.chirag047.rapidrepair.Presentation.Components.ActionBarWIthBack
 import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
+import com.chirag047.rapidrepair.Presentation.Components.customProgressBar
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsText
+import com.chirag047.rapidrepair.Presentation.ViewModels.RequestConfirmationViewModel
 import com.chirag047.rapidrepair.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
@@ -68,6 +78,16 @@ fun RequestConfirmation(
 ) {
 
     val scroll = rememberScrollState()
+    val scope = rememberCoroutineScope()
+
+    val requestConfirmationViewModel: RequestConfirmationViewModel = hiltViewModel()
+
+    val showProgressBar = remember {
+        mutableStateOf(false)
+    }
+
+    var openMySnackbar = remember { mutableStateOf(false) }
+    var snackBarMsg = remember { mutableStateOf("") }
 
     Box(Modifier.fillMaxSize()) {
         Column(
@@ -103,6 +123,7 @@ fun RequestConfirmation(
                 sharedPreferences.getString("userCity", "") + " city",
                 clientAddress
             )
+
             verticalLine()
 
             singleTrack(
@@ -136,10 +157,58 @@ fun RequestConfirmation(
                     label = "Submit",
                     color = MaterialTheme.colorScheme.primary
                 ) {
-                    // navController.navigate("SelectVehicleForServiceScreen")
+                    scope.launch(Dispatchers.Main) {
+
+                        val orderModel = OrderModel(
+                            System.currentTimeMillis().toString(),
+                            sharedPreferences.getString("userId", "")!!,
+                            corporateId,
+                            corporateName,
+                            corporateAddress,
+                            sharedPreferences.getString("userName", "")!!,
+                            vehicleType,
+                            vehicleCompany,
+                            vehicleModel,
+                            vehicleFuelType,
+                            vehicleLicensePlate,
+                            serviceType,
+                            clientAddress,
+                            clientLatitude,
+                            clientLongitude,
+                            clientAddedText
+                        )
+
+                        requestConfirmationViewModel.submitOrder(orderModel).collect {
+                            when (it) {
+                                is ResponseType.Error -> {
+                                    showProgressBar.value = false
+                                    snackBarMsg.value = it.errorMsg.toString()
+                                    openMySnackbar.value = true
+                                }
+
+                                is ResponseType.Loading -> {
+                                    showProgressBar.value = true
+                                }
+
+                                is ResponseType.Success -> {
+                                    showProgressBar.value = false
+                                    navController.navigate("SubmittedScreen")
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
+
+        customProgressBar(show = showProgressBar.value, title = "Wait a moment...")
+
+
+        SnackbarWithoutScaffold(
+            snackBarMsg.value, openMySnackbar.value, { openMySnackbar.value = it }, Modifier.align(
+                Alignment.BottomCenter
+            )
+        )
 
     }
 }

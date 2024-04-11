@@ -34,6 +34,7 @@ import com.chirag047.rapidrepair.Presentation.Screens.SelectServiceScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.SelectVehicleForServiceScreen
 import com.chirag047.rapidrepair.Presentation.Screens.SignUpScreen
+import com.chirag047.rapidrepair.Presentation.Screens.SubmittedScreen
 import com.chirag047.rapidrepair.Presentation.Screens.TrackNowScreen
 import com.chirag047.rapidrepair.Presentation.Screens.TrackScreen
 import com.chirag047.rapidrepair.Presentation.Screens.VehicleScreen
@@ -175,7 +176,8 @@ class MainActivity : ComponentActivity() {
                 val clientLongitude = it.arguments?.getString("clientLongitude")!!
                 val clientAddedText = it.arguments?.getString("clientAddedText")!!
 
-                RequestConfirmation(navController,
+                RequestConfirmation(
+                    navController,
                     sharedPreferences,
                     corporateId,
                     corporateName,
@@ -189,8 +191,14 @@ class MainActivity : ComponentActivity() {
                     clientAddress,
                     clientLatitude,
                     clientLongitude,
-                    clientAddedText)
+                    clientAddedText
+                )
             }
+
+            composable(route = "SubmittedScreen") {
+                SubmittedScreen(navController)
+            }
+
             composable(route = "EditProfile") {
                 EditProfile(navController)
             }

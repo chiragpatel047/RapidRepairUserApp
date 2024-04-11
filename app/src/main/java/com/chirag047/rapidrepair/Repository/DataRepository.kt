@@ -3,6 +3,7 @@ package com.chirag047.rapidrepair.Repository
 import android.util.Log
 import com.chirag047.rapidrepair.Common.ResponseType
 import com.chirag047.rapidrepair.Model.CenterModel
+import com.chirag047.rapidrepair.Model.OrderModel
 import com.chirag047.rapidrepair.Model.UserModel
 import com.chirag047.rapidrepair.Model.VehicleModel
 import com.google.firebase.auth.FirebaseAuth
@@ -113,4 +114,24 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
         }
     }
 
+    suspend fun submitOrder(orderModel: OrderModel): Flow<ResponseType<String>> = callbackFlow {
+
+        trySend(ResponseType.Loading())
+
+        firestore.collection("centers")
+            .document(orderModel.corporateId)
+            .collection("orders")
+            .document(orderModel.orderId)
+            .set(orderModel).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    trySend(ResponseType.Success("Submitted successfully"))
+                } else {
+                    trySend(ResponseType.Error("Something went wrong"))
+                }
+            }
+
+        awaitClose {
+            close()
+        }
+    }
 }

@@ -69,6 +69,8 @@ import com.chirag047.rapidrepair.Presentation.Components.textBetweenTwoLines
 import com.chirag047.rapidrepair.Presentation.ViewModels.LoginViewModel
 import com.chirag047.rapidrepair.R
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -256,6 +258,7 @@ fun LoginScreen(navController: NavController,sharedPreferences: SharedPreference
                                                 sharedPreferences.edit().putString("userName",it.data.userName).apply()
                                                 sharedPreferences.edit().putString("userEmail",it.data.email).apply()
                                                 sharedPreferences.edit().putString("userCity", it.data.city).apply()
+                                                sharedPreferences.edit().putString("userId", it.data.uid).apply()
                                                 sharedPreferences.edit().putBoolean("isFilled",true).apply()
 
                                                 navController.navigate("AllowLocation")

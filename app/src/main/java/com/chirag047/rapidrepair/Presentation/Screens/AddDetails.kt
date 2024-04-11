@@ -89,6 +89,9 @@ fun AddDetails(
 
         val activity = LocalContext.current as Activity
 
+        var descInfo by remember { mutableStateOf("") }
+
+
         val locationPermission = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestPermission(),
             onResult = { permissions ->
@@ -101,7 +104,7 @@ fun AddDetails(
                         context.startActivity(intent)
                     }
 
-                    scope.launch(Dispatchers.IO) {
+                    scope.launch(Dispatchers.Main) {
                         addDetailsViewModel
                             .getUserCurrentLocation(context)
                             .collect {
@@ -116,8 +119,29 @@ fun AddDetails(
 
                                     is ResponseType.Success -> {
                                         showProgressBar.value = false
-                                        snackBarMsg.value = "lat : " + it.data!!.latitude
-                                        openMySnackbar.value = true
+
+                                        val geocoder = Geocoder(context, Locale.getDefault())
+                                        val address =
+                                            geocoder.getFromLocation(
+                                                it.data!!.latitude,
+                                                it.data!!.longitude,
+                                                1
+                                            )
+
+                                        val clientAddress =
+                                            address!!.get(0).getAddressLine(0).toString()
+
+                                        val clientLatitude = it.data!!.latitude
+                                        val clientLongitude = it.data!!.longitude
+
+                                        var clientAddedText = "Nothing added by client"
+
+                                        if(!descInfo.equals("")){
+                                            clientAddedText=descInfo
+                                        }
+
+                                        navController.navigate("RequestConfirmation" + "/$corporateId" + "/$corporateName" + "/$corporateAddress" + "/$serviceType" + "/${vehicleType}" + "/${vehicleCompany}" + "/${vehicleModel}" + "/${vehicleFuelType}" + "/${vehicleLicensePlate}" + "/${clientAddress}" + "/${clientLatitude}" + "/${clientLongitude}" + "/${clientAddedText}")
+
                                     }
                                 }
                             }
@@ -144,7 +168,6 @@ fun AddDetails(
 
             Spacer(modifier = Modifier.padding(4.dp))
 
-            var descInfo by remember { mutableStateOf("") }
 
             TextField(
                 value = descInfo,

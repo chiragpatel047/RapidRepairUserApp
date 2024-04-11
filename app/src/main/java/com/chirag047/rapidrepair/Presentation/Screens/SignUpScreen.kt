@@ -272,6 +272,7 @@ fun SignUpScreen(navController: NavController,sharedPreferences: SharedPreferenc
 
                                     sharedPreferences.edit().putString("userName",nameText).apply()
                                     sharedPreferences.edit().putString("userEmail",emailText).apply()
+                                    sharedPreferences.edit().putString("userId", result.data!!.uid).apply()
 
                                     navController.navigate("SelectCityScreen")
                                 }

@@ -118,7 +118,7 @@ fun SelectServiceScreen(
                         return@FullWidthButton
                     }
 
-                    val serviceType = vehicleList.get(selectedIndex.value)
+                    val serviceType = vehicleList.get(selectedIndex.value).title
                     navController.navigate("SelectVehicleForServiceScreen" + "/$corporateId" + "/$corporateName" + "/$corporateAddress" + "/$serviceType")
                 }
             }

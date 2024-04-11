@@ -33,7 +33,6 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun WelcomeScreen(navController: NavController) {
 
-
     Column(modifier = Modifier.fillMaxSize()) {
 
         Spacer(modifier = Modifier.padding(20.dp))
