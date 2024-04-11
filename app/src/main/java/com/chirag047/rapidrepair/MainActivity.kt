@@ -146,6 +146,7 @@ class MainActivity : ComponentActivity() {
 
                 ChooseLocation(
                     navController,
+                    this@MainActivity,
                     corporateId,
                     corporateName,
                     corporateAddress,

@@ -119,7 +119,6 @@ fun SelectServiceScreen(
                     }
 
                     val serviceType = vehicleList.get(selectedIndex.value)
-
                     navController.navigate("SelectVehicleForServiceScreen" + "/$corporateId" + "/$corporateName" + "/$corporateAddress" + "/$serviceType")
                 }
             }

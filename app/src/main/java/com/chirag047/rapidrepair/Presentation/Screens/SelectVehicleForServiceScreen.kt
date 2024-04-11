@@ -142,14 +142,12 @@ fun SelectVehicleForServiceScreen(
 
                         val selectedVehicle = vehicleList.value.get(selectedCarListIndex.value)
                         navController.navigate("ChooseLocation" + "/$corporateId" + "/$corporateName" + "/$corporateAddress" + "/$serviceType" + "/${selectedVehicle.vehicleType}" + "/${selectedVehicle.vehicleCompany}" + "/${selectedVehicle.vehicleModel}" + "/${selectedVehicle.vehicleFuelType}" + "/${selectedVehicle.vehicleLicensePlate}")
-
                     }
                 }
             }
         }
 
         customProgressBar(show = showProgressBar.value, title = "Wait a moment...")
-
         SnackbarWithoutScaffold(
             snackBarMsg.value, openMySnackbar.value, { openMySnackbar.value = it }, Modifier.align(
                 Alignment.BottomCenter
