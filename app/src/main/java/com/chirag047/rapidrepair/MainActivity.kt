@@ -21,7 +21,6 @@ import com.chirag047.rapidrepair.Presentation.Screens.AddDetails
 import com.chirag047.rapidrepair.Presentation.Screens.AddNewVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
 import com.chirag047.rapidrepair.Presentation.Screens.ChangePasswordScreen
-import com.chirag047.rapidrepair.Presentation.Screens.ChooseLocation
 import com.chirag047.rapidrepair.Presentation.Screens.EditProfile
 import com.chirag047.rapidrepair.Presentation.Screens.ForgetPassword
 import com.chirag047.rapidrepair.Presentation.Screens.HomeScreen
@@ -132,7 +131,8 @@ class MainActivity : ComponentActivity() {
                     corporateAddress, serviceType
                 )
             }
-            composable(route = "ChooseLocation" + "/{corporateId}/{corporateName}/{corporateAddress}/{serviceType}/{vehicleType}/{vehicleCompany}/{vehicleModel}/{vehicleFuelType}/{vehicleLicensePlate}") {
+
+            composable(route = "AddDetails" + "/{corporateId}/{corporateName}/{corporateAddress}/{serviceType}/{vehicleType}/{vehicleCompany}/{vehicleModel}/{vehicleFuelType}/{vehicleLicensePlate}") {
 
                 val corporateId = it.arguments?.getString("corporateId")!!
                 val corporateName = it.arguments?.getString("corporateName")!!
@@ -144,7 +144,8 @@ class MainActivity : ComponentActivity() {
                 val vehicleFuelType = it.arguments?.getString("vehicleFuelType")!!
                 val vehicleLicensePlate = it.arguments?.getString("vehicleLicensePlate")!!
 
-                ChooseLocation(
+
+                AddDetails(
                     navController,
                     this@MainActivity,
                     corporateId,
@@ -158,11 +159,37 @@ class MainActivity : ComponentActivity() {
                     vehicleLicensePlate
                 )
             }
-            composable(route = "AddDetails") {
-                AddDetails(navController)
-            }
-            composable(route = "RequestConfirmation") {
-                RequestConfirmation(navController)
+            composable(route = "RequestConfirmation" + "/{corporateId}/{corporateName}/{corporateAddress}/{serviceType}/{vehicleType}/{vehicleCompany}/{vehicleModel}/{vehicleFuelType}/{vehicleLicensePlate}/{clientAddress}/{clientLatitude}/{clientLongitude}/{clientAddedText}") {
+
+                val corporateId = it.arguments?.getString("corporateId")!!
+                val corporateName = it.arguments?.getString("corporateName")!!
+                val corporateAddress = it.arguments?.getString("corporateAddress")!!
+                val serviceType = it.arguments?.getString("serviceType")!!
+                val vehicleType = it.arguments?.getString("vehicleType")!!
+                val vehicleCompany = it.arguments?.getString("vehicleCompany")!!
+                val vehicleModel = it.arguments?.getString("vehicleModel")!!
+                val vehicleFuelType = it.arguments?.getString("vehicleFuelType")!!
+                val vehicleLicensePlate = it.arguments?.getString("vehicleLicensePlate")!!
+                val clientAddress = it.arguments?.getString("clientAddress")!!
+                val clientLatitude = it.arguments?.getString("clientLatitude")!!
+                val clientLongitude = it.arguments?.getString("clientLongitude")!!
+                val clientAddedText = it.arguments?.getString("clientAddedText")!!
+
+                RequestConfirmation(navController,
+                    sharedPreferences,
+                    corporateId,
+                    corporateName,
+                    corporateAddress,
+                    serviceType,
+                    vehicleType,
+                    vehicleCompany,
+                    vehicleModel,
+                    vehicleFuelType,
+                    vehicleLicensePlate,
+                    clientAddress,
+                    clientLatitude,
+                    clientLongitude,
+                    clientAddedText)
             }
             composable(route = "EditProfile") {
                 EditProfile(navController)

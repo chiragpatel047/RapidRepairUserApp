@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Presentation.Screens
 
+import android.content.SharedPreferences
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -48,7 +49,23 @@ import com.chirag047.rapidrepair.R
 import kotlin.math.roundToInt
 
 @Composable
-fun RequestConfirmation(navController: NavController) {
+fun RequestConfirmation(
+    navController: NavController,
+    sharedPreferences: SharedPreferences,
+    corporateId: String,
+    corporateName: String,
+    corporateAddress: String,
+    serviceType: String,
+    vehicleType: String,
+    vehicleCompany: String,
+    vehicleModel: String,
+    vehicleFuelType: String,
+    vehicleLicensePlate: String,
+    clientAddress: String,
+    clientLatitude: String,
+    clientLongitude: String,
+    clientAddedText: String
+) {
 
     val scroll = rememberScrollState()
 
@@ -60,28 +77,46 @@ fun RequestConfirmation(navController: NavController) {
         ) {
             ActionBarWIthBack(title = "Request Confirmation")
 
-            singleTrack(R.drawable.car_icon, "Toyota Innova", "GJ 05 SC 3006")
+            var icon = R.drawable.car_icon
+
+            if (vehicleType.equals("Car")) {
+                icon = R.drawable.car_icon
+            } else if (vehicleType.equals("Motorcycle")) {
+                icon = R.drawable.motorcycle_icon
+            } else if (vehicleType.equals("Rickshaw")) {
+                icon = R.drawable.rickshaw_icon
+            } else if (vehicleType.equals("Truck")) {
+                icon = R.drawable.truck_icon
+            } else if (vehicleType.equals("Bus")) {
+                icon = R.drawable.bus_icon
+            }
+
+            singleTrack(
+                icon,
+                vehicleCompany + " " + vehicleModel,
+                vehicleLicensePlate
+            )
             verticalLine()
 
             singleTrack(
                 R.drawable.location_pin_icon,
-                "Surat city",
-                "Ring Road , Besides civil hospital, Nanpura 395004"
+                sharedPreferences.getString("userCity", "") + " city",
+                clientAddress
             )
             verticalLine()
 
             singleTrack(
                 R.drawable.about,
                 "Details",
-                "I'm in need of tire repair service as soon as..."
+                clientAddedText
             )
 
             verticalLine()
 
             singleTrack(
                 icon = R.drawable.service_center,
-                title = "Gotham Car Reparation",
-                desc = "House 58, Road 8, Block A Katargaam"
+                title = corporateName,
+                desc = corporateAddress
             )
         }
 

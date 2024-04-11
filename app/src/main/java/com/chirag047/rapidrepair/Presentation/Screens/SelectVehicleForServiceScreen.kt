@@ -141,7 +141,7 @@ fun SelectVehicleForServiceScreen(
                         }
 
                         val selectedVehicle = vehicleList.value.get(selectedCarListIndex.value)
-                        navController.navigate("ChooseLocation" + "/$corporateId" + "/$corporateName" + "/$corporateAddress" + "/$serviceType" + "/${selectedVehicle.vehicleType}" + "/${selectedVehicle.vehicleCompany}" + "/${selectedVehicle.vehicleModel}" + "/${selectedVehicle.vehicleFuelType}" + "/${selectedVehicle.vehicleLicensePlate}")
+                        navController.navigate("AddDetails" + "/$corporateId" + "/$corporateName" + "/$corporateAddress" + "/$serviceType" + "/${selectedVehicle.vehicleType}" + "/${selectedVehicle.vehicleCompany}" + "/${selectedVehicle.vehicleModel}" + "/${selectedVehicle.vehicleFuelType}" + "/${selectedVehicle.vehicleLicensePlate}")
                     }
                 }
             }

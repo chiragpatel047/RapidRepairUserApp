@@ -7,9 +7,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ChooseLocationViewModel @Inject constructor(val locationRepository: LocationRespository) :
+class AddDetailsViewModel @Inject constructor(val locationRespository: LocationRespository) :
     ViewModel() {
-    suspend fun getUserCurrentLocation(context: Context) =
-        locationRepository.getUserCurrentLocation(context)
 
+    fun getUserCurrentLocation(context: Context) =
+        locationRespository.getUserCurrentLocation(context)
 }
