@@ -175,7 +175,8 @@ fun RequestConfirmation(
                             clientAddress,
                             clientLatitude,
                             clientLongitude,
-                            clientAddedText
+                            clientAddedText,
+                            "Pending"
                         )
 
                         requestConfirmationViewModel.submitOrder(orderModel).collect {

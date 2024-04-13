@@ -118,9 +118,7 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
 
         trySend(ResponseType.Loading())
 
-        firestore.collection("centers")
-            .document(orderModel.corporateId)
-            .collection("orders")
+        firestore.collection("orders")
             .document(orderModel.orderId)
             .set(orderModel).addOnCompleteListener {
                 if (it.isSuccessful) {
