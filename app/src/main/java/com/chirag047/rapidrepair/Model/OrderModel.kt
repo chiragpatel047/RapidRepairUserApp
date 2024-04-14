@@ -1,12 +1,13 @@
 package com.chirag047.rapidrepair.Model
 
 data class OrderModel(
-    val orderId : String = "",
-    val userId : String = "",
+    val orderId: String = "",
+    val userId: String = "",
     val corporateId: String = "",
+    val mechanicId: String = "",
     val corporateName: String = "",
     val corporateAddress: String = "",
-    val vehicleOwner : String = "",
+    val vehicleOwner: String = "",
     val vehicleType: String = "",
     val vehicleCompany: String = "",
     val vehicleModel: String = "",
@@ -17,5 +18,7 @@ data class OrderModel(
     val clientLatitude: String = "",
     val clientLongitude: String = "",
     val clientAddedText: String = "",
-    val orderStatus : String = ""
+    val orderStatus: String = "",
+    val mechanicLiveLatitude: String = "",
+    val mechanicLiveLongitude: String = ""
 )

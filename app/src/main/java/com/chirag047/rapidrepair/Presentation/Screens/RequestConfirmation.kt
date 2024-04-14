@@ -163,6 +163,7 @@ fun RequestConfirmation(
                             System.currentTimeMillis().toString(),
                             sharedPreferences.getString("userId", "")!!,
                             corporateId,
+                            "",
                             corporateName,
                             corporateAddress,
                             sharedPreferences.getString("userName", "")!!,
@@ -176,7 +177,9 @@ fun RequestConfirmation(
                             clientLatitude,
                             clientLongitude,
                             clientAddedText,
-                            "Pending"
+                            "Pending",
+                            "",
+                            ""
                         )
 
                         requestConfirmationViewModel.submitOrder(orderModel).collect {
