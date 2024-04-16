@@ -132,4 +132,23 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
             close()
         }
     }
+
+    suspend fun getMyOrdersRequest(userId: String,requestType : String): Flow<ResponseType<List<OrderModel>>> =
+        callbackFlow {
+
+            trySend(ResponseType.Loading())
+
+            firestore.collection("orders")
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("orderStatus", requestType)
+                .addSnapshotListener { value, error ->
+                    trySend(ResponseType.Success(value!!.toObjects(OrderModel::class.java)))
+                }
+
+            awaitClose {
+                close()
+            }
+        }
+
+
 }

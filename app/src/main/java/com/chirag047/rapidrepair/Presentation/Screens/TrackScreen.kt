@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Presentation.Screens
 
+import android.content.SharedPreferences
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +21,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,15 +34,39 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.chirag047.rapidrepair.Common.ResponseType
+import com.chirag047.rapidrepair.Model.OrderModel
+import com.chirag047.rapidrepair.Presentation.Components.NoDataText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldCenterText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsText
+import com.chirag047.rapidrepair.Presentation.ViewModels.TrackScreenViewModel
 import com.chirag047.rapidrepair.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
-fun TrackScreen(navController: NavController) {
+fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferences) {
+
+    val trackScreenViewModel: TrackScreenViewModel = hiltViewModel()
+    val scope = rememberCoroutineScope()
+
+
     Box(Modifier.fillMaxSize()) {
+
+        val liveOrdersList = remember {
+            mutableStateOf(mutableListOf(OrderModel()))
+        }
+
+        val doneOrdersList = remember {
+            mutableStateOf(mutableListOf(OrderModel()))
+        }
+
+
         Column(Modifier.fillMaxWidth()) {
             poppinsBoldCenterText(
                 contentText = "Track",
@@ -65,9 +94,34 @@ fun TrackScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.padding(2.dp))
 
-                TrackSingle("Gotham Car Reparation", "Car | Toyata | Innova | Petrol") {
-                    navController.navigate("TrackNowScreen")
+                val userId = sharedPreferences.getString("userId", "")!!
+
+                LaunchedEffect(key1 = Unit) {
+                    scope.launch(Dispatchers.Main) {
+                        trackScreenViewModel.getMyOrdersRequest(userId, "Live").collect {
+                            when (it) {
+                                is ResponseType.Error -> {
+
+                                }
+
+                                is ResponseType.Loading -> {
+
+                                }
+
+                                is ResponseType.Success -> {
+                                    val list = mutableListOf(OrderModel())
+                                    list.clear()
+                                    list.addAll(it.data!!)
+                                    liveOrdersList.value = list
+
+                                }
+                            }
+                        }
+                    }
                 }
+
+                NoDataText("No Live request", liveOrdersList.value.size.equals(0))
+                loadLiveRequests(liveOrdersList.value, navController)
 
                 Spacer(modifier = Modifier.padding(6.dp))
 
@@ -80,26 +134,34 @@ fun TrackScreen(navController: NavController) {
                 )
 
                 Spacer(modifier = Modifier.padding(6.dp))
-                TrackHistorySingle(
-                    "Sodhi Garage LTD",
-                    "Car | TATA | EV | Battery",
-                    "Mon 9 Feb 2024 | 11.47 AM"
-                )
-                TrackHistorySingle(
-                    "Ramesh Corporation",
-                    "Bike | Yamaha | Petrol | Battery",
-                    "Wed 15 Jan 2024 | 01.35 PM"
-                )
-                TrackHistorySingle(
-                    "CS Mechanics PVT LTD",
-                    "Car | TATA | EV | Battery",
-                    "Tue 30 Nov 2023 | 6.50 PM"
-                )
-                TrackHistorySingle(
-                    "Sodhi Garage LTD",
-                    "Car | TATA | EV | Battery",
-                    "Sun 6 Aug 2023 | 07.30 PM"
-                )
+
+                LaunchedEffect(key1 = Unit) {
+                    scope.launch(Dispatchers.Main) {
+                        trackScreenViewModel.getMyOrdersRequest(userId, "Done").collect {
+                            when (it) {
+                                is ResponseType.Error -> {
+
+                                }
+
+                                is ResponseType.Loading -> {
+
+                                }
+
+                                is ResponseType.Success -> {
+                                    val list = mutableListOf(OrderModel())
+                                    list.clear()
+                                    list.addAll(it.data!!)
+                                    doneOrdersList.value = list
+
+                                }
+                            }
+                        }
+                    }
+                }
+
+                NoDataText("No history", doneOrdersList.value.size.equals(0))
+                loadDoneRequests(doneOrdersList.value, navController)
+
             }
 
         }
@@ -184,7 +246,7 @@ fun TrackSingle(title: String, desc: String, onclick: () -> Unit) {
 
 
 @Composable
-fun TrackHistorySingle(title: String, desc: String, dataAndTime: String) {
+fun TrackHistorySingle(title: String, desc: String) {
     Row(
         Modifier
             .padding(15.dp, 7.dp)
@@ -239,19 +301,32 @@ fun TrackHistorySingle(title: String, desc: String, dataAndTime: String) {
                     .padding(10.dp, 0.dp)
             )
 
-            Spacer(modifier = Modifier.padding(4.dp))
-
-            Text(
-                text = dataAndTime,
-                fontSize = 12.sp,
-                fontFamily = FontFamily(Font(R.font.poppins_medium)),
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .padding(10.dp, 0.dp)
-            )
             Spacer(modifier = Modifier.padding(10.dp))
 
         }
 
+    }
+}
+
+@Composable
+fun loadLiveRequests(list: List<OrderModel>, navController: NavController) {
+    list.forEach {
+        TrackSingle(
+            it.vehicleOwner,
+            it.vehicleCompany + " " + it.vehicleModel + " | " + it.vehicleFuelType
+        ) {
+            navController.navigate("TrackNowScreen")
+        }
+    }
+}
+
+@Composable
+fun loadDoneRequests(list: List<OrderModel>, navController: NavController) {
+    list.forEach {
+
+        TrackHistorySingle(
+            it.corporateName,
+            it.vehicleCompany + " " + it.vehicleModel + " | " + it.vehicleFuelType
+        )
     }
 }
