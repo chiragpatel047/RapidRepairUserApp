@@ -3,6 +3,7 @@ package com.chirag047.rapidrepair.Repository
 import android.util.Log
 import com.chirag047.rapidrepair.Common.ResponseType
 import com.chirag047.rapidrepair.Model.CenterModel
+import com.chirag047.rapidrepair.Model.Coordinates
 import com.chirag047.rapidrepair.Model.OrderModel
 import com.chirag047.rapidrepair.Model.UserModel
 import com.chirag047.rapidrepair.Model.VehicleModel
@@ -133,7 +134,10 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
         }
     }
 
-    suspend fun getMyOrdersRequest(userId: String,requestType : String): Flow<ResponseType<List<OrderModel>>> =
+    suspend fun getMyOrdersRequest(
+        userId: String,
+        requestType: String
+    ): Flow<ResponseType<List<OrderModel>>> =
         callbackFlow {
 
             trySend(ResponseType.Loading())
@@ -150,5 +154,20 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
             }
         }
 
+    suspend fun trackLiveLocation(orderId: String): Flow<ResponseType<Coordinates?>> =
+        callbackFlow {
+
+            trySend(ResponseType.Loading())
+
+            firestore.collection("liveTrack")
+                .document(orderId)
+                .addSnapshotListener { value, error ->
+                    trySend(ResponseType.Success(value!!.toObject(Coordinates::class.java))!!)
+                }
+
+            awaitClose {
+                close()
+            }
+        }
 
 }

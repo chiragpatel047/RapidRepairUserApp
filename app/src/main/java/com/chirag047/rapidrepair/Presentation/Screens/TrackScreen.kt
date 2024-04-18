@@ -59,11 +59,19 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
     Box(Modifier.fillMaxSize()) {
 
         val liveOrdersList = remember {
-            mutableStateOf(mutableListOf(OrderModel()))
+            mutableListOf<OrderModel>()
         }
 
         val doneOrdersList = remember {
-            mutableStateOf(mutableListOf(OrderModel()))
+            mutableListOf<OrderModel>()
+        }
+
+        var liverOrdersStatus = remember {
+            mutableStateOf("Loading...")
+        }
+
+        var doneOrdersStatus = remember {
+            mutableStateOf("Loading...")
         }
 
 
@@ -109,19 +117,17 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
                                 }
 
                                 is ResponseType.Success -> {
-                                    val list = mutableListOf(OrderModel())
-                                    list.clear()
-                                    list.addAll(it.data!!)
-                                    liveOrdersList.value = list
-
+                                    liveOrdersList.clear()
+                                    liveOrdersList.addAll(it.data!!)
+                                    liverOrdersStatus.value = "No Live request"
                                 }
                             }
                         }
                     }
                 }
 
-                NoDataText("No Live request", liveOrdersList.value.size.equals(0))
-                loadLiveRequests(liveOrdersList.value, navController)
+                NoDataText(liverOrdersStatus.value, liveOrdersList.size.equals(0))
+                loadLiveRequests(liveOrdersList, navController)
 
                 Spacer(modifier = Modifier.padding(6.dp))
 
@@ -148,19 +154,17 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
                                 }
 
                                 is ResponseType.Success -> {
-                                    val list = mutableListOf(OrderModel())
-                                    list.clear()
-                                    list.addAll(it.data!!)
-                                    doneOrdersList.value = list
-
+                                    doneOrdersList.clear()
+                                    doneOrdersList.addAll(it.data!!)
+                                    doneOrdersStatus.value = "No history"
                                 }
                             }
                         }
                     }
                 }
 
-                NoDataText("No history", doneOrdersList.value.size.equals(0))
-                loadDoneRequests(doneOrdersList.value, navController)
+                NoDataText(doneOrdersStatus.value, doneOrdersList.size.equals(0))
+                loadDoneRequests(doneOrdersList, navController)
 
             }
 
@@ -315,7 +319,7 @@ fun loadLiveRequests(list: List<OrderModel>, navController: NavController) {
             it.vehicleOwner,
             it.vehicleCompany + " " + it.vehicleModel + " | " + it.vehicleFuelType
         ) {
-            navController.navigate("TrackNowScreen")
+            navController.navigate("TrackNowScreen" + "/${it.orderId}" + "/${it.clientAddress}" + "/${it.clientLatitude}" + "/${it.clientLongitude}"+ "/${it.corporateAddress}")
         }
     }
 }
