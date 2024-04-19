@@ -208,6 +208,7 @@ class MainActivity : ComponentActivity() {
             composable(route = "ChangePasswordScreen") {
                 ChangePasswordScreen(navController)
             }
+
             composable(route = "TrackNowScreen" + "/{orderId}/{clientAddress}/{clientLatitude}/{clientLongitude}/{corporateAddress}") {
 
                 val orderId = it.arguments?.getString("orderId")!!

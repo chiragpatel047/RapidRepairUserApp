@@ -69,6 +69,18 @@ fun TrackNowScreen(
 
         val trackNowScreenViewModel: TrackNowScreenViewModel = hiltViewModel()
 
+
+        val markerState =
+            remember {
+                mutableStateOf(
+                    MarkerState(
+                        position = LatLng(
+                            0.0, 0.0
+                        )
+                    )
+                )
+            }
+
         LaunchedEffect(key1 = Unit) {
             CoroutineScope(Dispatchers.IO).launch {
                 trackNowScreenViewModel.trackLiveLocation(orderId)
@@ -92,17 +104,8 @@ fun TrackNowScreen(
 
             is ResponseType.Success -> {
 
-                val markerState =
-                    remember {
-                        mutableStateOf(
-                            MarkerState(
-                                position = LatLng(
-                                    result.value.data!!.lat,
-                                    result.value.data!!.long
-                                )
-                            )
-                        )
-                    }
+                markerState.value.position =
+                    LatLng(result.value.data!!.lat, result.value.data!!.long)
 
                 val cameraPositionState = rememberCameraPositionState {
                     position = CameraPosition.fromLatLngZoom(markerState.value.position, 12f)
@@ -234,7 +237,7 @@ fun TrackNowScreen(
                         .padding(0.dp, 15.dp, 0.dp, 40.dp)
                 ) {
                     FullWidthButton(
-                        label = "Cancel Request",
+                        label = "Okay",
                         color = MaterialTheme.colorScheme.primary
                     ) {
 
