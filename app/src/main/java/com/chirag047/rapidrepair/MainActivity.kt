@@ -19,6 +19,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.chirag047.rapidrepair.Presentation.Screens.AddDetails
 import com.chirag047.rapidrepair.Presentation.Screens.AddNewVehicle
+import com.chirag047.rapidrepair.Presentation.Screens.AllCenterListScreen
 import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
 import com.chirag047.rapidrepair.Presentation.Screens.ChangePasswordScreen
 import com.chirag047.rapidrepair.Presentation.Screens.EditProfile
@@ -207,6 +208,9 @@ class MainActivity : ComponentActivity() {
             }
             composable(route = "ChangePasswordScreen") {
                 ChangePasswordScreen(navController)
+            }
+            composable(route = "AllCenterListScreen") {
+                AllCenterListScreen(navController, sharedPreferences)
             }
 
             composable(route = "TrackNowScreen" + "/{orderId}/{clientAddress}/{clientLatitude}/{clientLongitude}/{corporateAddress}") {

@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -55,6 +56,7 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
     val trackScreenViewModel: TrackScreenViewModel = hiltViewModel()
     val scope = rememberCoroutineScope()
 
+    val pendingOrdersState = trackScreenViewModel.requestsData.collectAsState()
 
     Box(Modifier.fillMaxSize()) {
 
@@ -62,18 +64,26 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
             mutableListOf<OrderModel>()
         }
 
+        val pendingOrdersList = remember {
+            mutableListOf<OrderModel>()
+        }
+
+
         val doneOrdersList = remember {
             mutableListOf<OrderModel>()
         }
 
-        var liverOrdersStatus = remember {
+        val liverOrdersStatus = remember {
             mutableStateOf("Loading...")
         }
 
-        var doneOrdersStatus = remember {
+        val doneOrdersStatus = remember {
             mutableStateOf("Loading...")
         }
 
+        val pendingOrdersStatus = remember {
+            mutableStateOf("Loading...")
+        }
 
         Column(Modifier.fillMaxWidth()) {
             poppinsBoldCenterText(
@@ -93,7 +103,7 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
             ) {
                 Spacer(modifier = Modifier.padding(4.dp))
                 poppinsBoldText(
-                    contentText = "Service Request list",
+                    contentText = "Currently Live request",
                     size = 16.sp,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -104,30 +114,69 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
 
                 val userId = sharedPreferences.getString("userId", "")!!
 
-                LaunchedEffect(key1 = Unit) {
-                    scope.launch(Dispatchers.Main) {
-                        trackScreenViewModel.getMyOrdersRequest(userId, "Live").collect {
-                            when (it) {
-                                is ResponseType.Error -> {
-
-                                }
-
-                                is ResponseType.Loading -> {
-
-                                }
-
-                                is ResponseType.Success -> {
-                                    liveOrdersList.clear()
-                                    liveOrdersList.addAll(it.data!!)
-                                    liverOrdersStatus.value = "No Live request"
-                                }
-                            }
-                        }
-                    }
-                }
 
                 NoDataText(liverOrdersStatus.value, liveOrdersList.size.equals(0))
                 loadLiveRequests(liveOrdersList, navController)
+
+
+                LaunchedEffect(key1 = Unit) {
+                    scope.launch(Dispatchers.IO) {
+                        trackScreenViewModel.getMyRequests(userId)
+                    }
+                }
+
+                when (pendingOrdersState.value) {
+                    is ResponseType.Error -> {
+
+                    }
+
+                    is ResponseType.Loading -> {
+
+                    }
+
+                    is ResponseType.Success -> {
+                        pendingOrdersList.clear()
+                        liveOrdersList.clear()
+                        doneOrdersList.clear()
+
+                        pendingOrdersState.value.data!!.forEach {
+                            if (it.orderStatus.equals("Pending") || it.orderStatus.equals("Mechanic Pending")) {
+                                pendingOrdersList.add(it)
+                            }
+                        }
+
+                        pendingOrdersState.value.data!!.forEach {
+                            if (it.orderStatus.equals("Live")) {
+                                liveOrdersList.add(it)
+                            }
+                        }
+
+                        pendingOrdersState.value.data!!.forEach {
+                            if (it.orderStatus.equals("Done")) {
+                                doneOrdersList.add(it)
+                            }
+                        }
+
+                        pendingOrdersStatus.value = "No pending request"
+                        liverOrdersStatus.value = "No live request"
+                        doneOrdersStatus.value = "No history"
+                    }
+                }
+
+                Spacer(modifier = Modifier.padding(6.dp))
+
+                poppinsBoldText(
+                    contentText = "Pending Request",
+                    size = 16.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(15.dp, 5.dp, 15.dp, 0.dp)
+                )
+
+                Spacer(modifier = Modifier.padding(6.dp))
+
+                NoDataText(pendingOrdersStatus.value, pendingOrdersList.size.equals(0))
+                loadDoneRequests(pendingOrdersList, navController)
 
                 Spacer(modifier = Modifier.padding(6.dp))
 
@@ -141,27 +190,6 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
 
                 Spacer(modifier = Modifier.padding(6.dp))
 
-                LaunchedEffect(key1 = Unit) {
-                    scope.launch(Dispatchers.Main) {
-                        trackScreenViewModel.getMyOrdersRequest(userId, "Done").collect {
-                            when (it) {
-                                is ResponseType.Error -> {
-
-                                }
-
-                                is ResponseType.Loading -> {
-
-                                }
-
-                                is ResponseType.Success -> {
-                                    doneOrdersList.clear()
-                                    doneOrdersList.addAll(it.data!!)
-                                    doneOrdersStatus.value = "No history"
-                                }
-                            }
-                        }
-                    }
-                }
 
                 NoDataText(doneOrdersStatus.value, doneOrdersList.size.equals(0))
                 loadDoneRequests(doneOrdersList, navController)
@@ -319,7 +347,7 @@ fun loadLiveRequests(list: List<OrderModel>, navController: NavController) {
             it.vehicleOwner,
             it.vehicleCompany + " " + it.vehicleModel + " | " + it.vehicleFuelType
         ) {
-            navController.navigate("TrackNowScreen" + "/${it.orderId}" + "/${it.clientAddress}" + "/${it.clientLatitude}" + "/${it.clientLongitude}"+ "/${it.corporateAddress}")
+            navController.navigate("TrackNowScreen" + "/${it.orderId}" + "/${it.clientAddress}" + "/${it.clientLatitude}" + "/${it.clientLongitude}" + "/${it.corporateAddress}")
         }
     }
 }

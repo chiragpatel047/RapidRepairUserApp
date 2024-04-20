@@ -68,6 +68,7 @@ import com.chirag047.rapidrepair.Presentation.Components.FilledCommonCustomButto
 import com.chirag047.rapidrepair.Presentation.Components.FilledCustomButton
 import com.chirag047.rapidrepair.Presentation.Components.FullWidthButton
 import com.chirag047.rapidrepair.Presentation.Components.GrayFilledSimpleButton
+import com.chirag047.rapidrepair.Presentation.Components.NoDataText
 import com.chirag047.rapidrepair.Presentation.Components.SearchBar
 import com.chirag047.rapidrepair.Presentation.Components.SearchChatSingle
 import com.chirag047.rapidrepair.Presentation.Components.SingleCardService
@@ -88,10 +89,13 @@ fun HomeScreen(navController: NavController, sharedPreferences: SharedPreference
     val scroll = rememberScrollState()
     val homeScreenViewModel: HomeScreenViewModel = hiltViewModel()
 
-    var centerList = remember {
-        mutableStateOf(mutableListOf<CenterModel>())
+    val centerList = remember {
+        mutableListOf<CenterModel>()
     }
 
+    val centerListStatus = remember {
+        mutableStateOf<String>("Loading...")
+    }
 
     LaunchedEffect(key1 = Unit) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -106,10 +110,9 @@ fun HomeScreen(navController: NavController, sharedPreferences: SharedPreference
         when (state.value) {
 
             is ResponseType.Success -> {
-                val list = mutableListOf(CenterModel())
-                list.clear()
-                list.addAll(state.value.data!!)
-                centerList.value = list
+                centerList.clear()
+                centerList.addAll(state.value.data!!)
+                centerListStatus.value = "No centers available"
             }
 
             is ResponseType.Loading -> {
@@ -278,9 +281,12 @@ fun HomeScreen(navController: NavController, sharedPreferences: SharedPreference
             }
 
             Spacer(modifier = Modifier.padding(4.dp))
-            textWithSeeAllText(title = "Near you")
+            textWithSeeAllText(title = "Near you") {
+                navController.navigate("AllCenterListScreen")
+            }
 
-            loadCenters(list = centerList.value, navController = navController)
+            loadCenters(list = centerList.take(3), navController = navController)
+            NoDataText(centerListStatus.value, centerList.size.equals(0))
 
         }
     }
