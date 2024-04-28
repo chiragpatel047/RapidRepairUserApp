@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -28,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -72,8 +75,6 @@ fun EditProfile(navController: NavController) {
         mutableStateOf("")
     }
 
-    val result = profileViewModel.updateProfilePic.collectAsState()
-
     val scope = rememberCoroutineScope()
 
     val showProgressBar = remember {
@@ -95,7 +96,31 @@ fun EditProfile(navController: NavController) {
 
         var nameText by remember { mutableStateOf("Jone snow") }
         var numberText by remember { mutableStateOf("") }
+        var profileImage = remember {
+            mutableStateOf("")
+        }
 
+        LaunchedEffect(key1 = Unit) {
+            scope.launch(Dispatchers.IO) {
+                profileViewModel.getUserDetails().collect {
+                    when (it) {
+                        is ResponseType.Error -> {
+
+                        }
+
+                        is ResponseType.Loading -> {
+
+                        }
+
+                        is ResponseType.Success -> {
+                            nameText = it.data?.userName!!
+                            numberText = it.data?.phoneNo!!
+                            profileImage.value = it.data?.userImage!!
+                        }
+                    }
+                }
+            }
+        }
 
         Column(Modifier.fillMaxWidth()) {
             ActionBarWIthBack(title = "Edit profile") {
@@ -114,22 +139,37 @@ fun EditProfile(navController: NavController) {
             ) {
 
                 if (imageUri.value.equals("")) {
-                    Image(
-                        painter = painterResource(R.drawable.profile_filled_icon),
-                        contentDescription = "",
-                        colorFilter = ColorFilter.tint(Color.White),
-                        modifier = Modifier
-                            .size(100.dp)
-                            .clip(RoundedCornerShape(50.dp))
-                            .background(Color.Gray)
-                            .padding(10.dp)
-                            .align(Alignment.TopCenter)
-                    )
+                    if (profileImage.value.equals("")) {
+                        Image(
+                            painter = painterResource(R.drawable.profile_filled_icon),
+                            contentDescription = "",
+                            colorFilter = ColorFilter.tint(Color.White),
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(RoundedCornerShape(50.dp))
+                                .background(Color.Gray)
+                                .padding(10.dp)
+                                .align(Alignment.TopCenter)
+                        )
+                    } else {
+                        Image(
+                            painter = rememberImagePainter(profileImage.value),
+                            contentDescription = "",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(RoundedCornerShape(50.dp))
+                                .background(Color.Black)
+                                .align(Alignment.TopCenter)
+                        )
+                    }
+
                 } else {
                     Image(
                         painter = rememberImagePainter(imageUri.value),
                         contentDescription = "",
-                        Modifier
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
                             .size(100.dp)
                             .clip(RoundedCornerShape(50.dp))
                             .background(Color.Black)
@@ -256,34 +296,44 @@ fun EditProfile(navController: NavController) {
                     label = "Update",
                     color = MaterialTheme.colorScheme.primary
                 ) {
-                    scope.launch(Dispatchers.IO) {
+                    if (numberText.equals("")) {
+                        snackBarMsg.value = "Please enter phone no"
+                        openMySnackbar.value = true
+                        return@FullWidthButton
+                    }
+
+                    scope.launch(Dispatchers.Main) {
+
                         profileViewModel.updateUserProfilePictureAndPhone(
                             imageUri.value,
+                            nameText,
                             numberText
-                        )
+                        ).collect {
+                            when (it) {
+                                is ResponseType.Error -> {
+                                    showProgressBar.value = false
+                                    snackBarMsg.value = it.errorMsg!!
+                                    openMySnackbar.value = true
+                                }
+
+                                is ResponseType.Loading -> {
+                                    showProgressBar.value = true
+                                }
+
+                                is ResponseType.Success -> {
+                                    showProgressBar.value = false
+                                    snackBarMsg.value = it.data!!
+                                    openMySnackbar.value = true
+                                    navController.popBackStack()
+                                }
+                            }
+                        }
                     }
 
-
-                    when (result.value) {
-                        is ResponseType.Error -> {
-                            showProgressBar.value = false
-                            snackBarMsg.value = result.value.errorMsg.toString()
-                            openMySnackbar.value = true
-                        }
-
-                        is ResponseType.Loading -> {
-                            showProgressBar.value = true
-                        }
-
-                        is ResponseType.Success -> {
-                            showProgressBar.value = false
-                            snackBarMsg.value = result.value.data!!
-                            openMySnackbar.value = true
-                        }
-                    }
                 }
             }
         }
+
         customProgressBar(show = showProgressBar.value, title = "Wait a moment...")
 
         SnackbarWithoutScaffold(

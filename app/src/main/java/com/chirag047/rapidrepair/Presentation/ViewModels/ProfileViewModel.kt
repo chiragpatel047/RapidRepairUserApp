@@ -14,17 +14,12 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(val dataRepository: DataRepository) : ViewModel() {
 
+    suspend fun updateUserProfilePictureAndPhone(
+        userImage: String,
+        userName: String,
+        phoneNo: String
+    ) =
+        dataRepository.updateUserProfilePictureAndPhone(userImage, userName, phoneNo)
 
-    private val _updateProfilePic = MutableStateFlow<ResponseType<String>>(ResponseType.Loading())
-
-    val updateProfilePic: StateFlow<ResponseType<String>>
-        get() = _updateProfilePic
-
-    suspend fun updateUserProfilePictureAndPhone(userImage: String, phoneNo: String) {
-        viewModelScope.launch {
-            dataRepository.updateUserProfilePictureAndPhone(userImage, phoneNo).collect {
-                _updateProfilePic.emit(it)
-            }
-        }
-    }
+    suspend fun getUserDetails() = dataRepository.getUserDetails()
 }

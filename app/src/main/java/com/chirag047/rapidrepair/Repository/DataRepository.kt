@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Repository
 
+import android.net.Uri
 import android.util.Log
 import com.chirag047.rapidrepair.Common.ResponseType
 import com.chirag047.rapidrepair.Model.CenterModel
@@ -9,12 +10,18 @@ import com.chirag047.rapidrepair.Model.UserModel
 import com.chirag047.rapidrepair.Model.VehicleModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: FirebaseFirestore) {
+class DataRepository @Inject constructor(
+    val auth: FirebaseAuth, val firestore: FirebaseFirestore, val storage: FirebaseStorage
+) {
 
     suspend fun getCenters(cityName: String): Flow<ResponseType<List<CenterModel>>> = callbackFlow {
 
@@ -92,18 +99,39 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
         }
     }
 
-
     suspend fun updateUserProfilePictureAndPhone(
-        userImage: String, phoneNo: String
+        userImage: String, userName: String, phoneNo: String
     ): Flow<ResponseType<String>> = callbackFlow {
         trySend(ResponseType.Loading())
 
-        firestore.collection("users").document(auth.currentUser!!.uid)
-            .update("userImage", userImage, "phoneNo", phoneNo).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    trySend(ResponseType.Success("Updated successfully"))
+        if (!userImage.equals("")) {
+
+            val ref = storage.reference.child("Users").child("userProfilePhotos")
+                .child(System.currentTimeMillis().toString())
+
+            ref.putFile(Uri.parse(userImage)).addOnSuccessListener {
+                ref.downloadUrl.addOnSuccessListener {
+
+                    firestore.collection("users").document(auth.currentUser!!.uid)
+                        .update("userImage", it, "userName", userName, "phoneNo", phoneNo)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                trySend(ResponseType.Success("Updated successfully"))
+                                Log.d("profileUpdatedLogSuccess", "updated")
+                            }
+                        }
                 }
             }
+        } else {
+
+            firestore.collection("users").document(auth.currentUser!!.uid)
+                .update("userName", userName, "phoneNo", phoneNo).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        trySend(ResponseType.Success("Updated successfully"))
+                        Log.d("profileUpdatedLogSuccess", "updated")
+                    }
+                }
+        }
         awaitClose {
             close()
         }
