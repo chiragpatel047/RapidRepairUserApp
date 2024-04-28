@@ -76,7 +76,9 @@ fun SelectVehicleForServiceScreen(
 
         Column(Modifier.fillMaxSize()) {
 
-            ActionBarWIthBack(title = "Choose vehicle")
+            ActionBarWIthBack(title = "Choose vehicle") {
+                navController.popBackStack("SelectServiceScreen", false)
+            }
 
             when (state.value) {
                 is ResponseType.Error -> {

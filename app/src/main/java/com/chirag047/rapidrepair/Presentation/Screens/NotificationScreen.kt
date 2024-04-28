@@ -13,7 +13,9 @@ import com.chirag047.rapidrepair.Presentation.Components.ActionBarWIthBack
 fun NotificationScreen(navController: NavController) {
     Box(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxWidth()) {
-            ActionBarWIthBack(title = "Notification")
+            ActionBarWIthBack(title = "Notification"){
+
+            }
         }
     }
 }

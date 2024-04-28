@@ -154,7 +154,9 @@ fun AddDetails(
             })
 
         Column(Modifier.fillMaxWidth()) {
-            ActionBarWIthBack(title = "Add details")
+            ActionBarWIthBack(title = "Add details"){
+
+            }
 
             Spacer(modifier = Modifier.padding(2.dp))
 

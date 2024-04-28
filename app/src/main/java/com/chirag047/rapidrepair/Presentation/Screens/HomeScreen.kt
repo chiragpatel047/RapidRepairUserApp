@@ -163,13 +163,7 @@ fun HomeScreen(navController: NavController, sharedPreferences: SharedPreference
                             textAlign = TextAlign.Center,
                             fontSize = 14.sp
                         )
-                        Spacer(modifier = Modifier.padding(2.dp))
-                        Icon(
-                            painter = painterResource(id = R.drawable.down_arrow_icon),
-                            contentDescription = "",
-                            modifier = Modifier.size(12.dp),
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
+
                     }
                 }
                 GrayFilledSimpleButton(imageIcon = R.drawable.notification) {
@@ -177,16 +171,18 @@ fun HomeScreen(navController: NavController, sharedPreferences: SharedPreference
                 }
             }
 
-            SearchBar("Search near services...")
-
             Row(
                 Modifier
                     .fillMaxWidth()
                     .padding(15.dp, 20.dp, 15.dp, 0.dp)
                     .clip(RoundedCornerShape(25.dp))
-                    .background(MaterialTheme.colorScheme.tertiaryContainer),
+                    .background(MaterialTheme.colorScheme.tertiaryContainer)
+                    .clickable {
+                        navController.navigate("AllCenterListScreen")
+                    },
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
+
             ) {
                 Column(verticalArrangement = Arrangement.Center) {
                     Text(
@@ -210,6 +206,7 @@ fun HomeScreen(navController: NavController, sharedPreferences: SharedPreference
 
                     Button(
                         onClick = {
+                            navController.navigate("AllCenterListScreen")
                         },
                         colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.tertiary),
                         modifier = Modifier
@@ -230,7 +227,6 @@ fun HomeScreen(navController: NavController, sharedPreferences: SharedPreference
                     contentDescription = "",
                     modifier = Modifier.size(150.dp)
                 )
-
             }
 
             Spacer(modifier = Modifier.padding(4.dp))
@@ -260,7 +256,7 @@ fun HomeScreen(navController: NavController, sharedPreferences: SharedPreference
                         .clip(RoundedCornerShape(25.dp))
                         .background(MaterialTheme.colorScheme.primaryContainer)
                         .clickable {
-
+                            navController.navigate("AllCenterListScreen")
                         })
 
                 SingleCardService(icon = R.drawable.towtruck_icon,
@@ -275,7 +271,7 @@ fun HomeScreen(navController: NavController, sharedPreferences: SharedPreference
                         .clip(RoundedCornerShape(25.dp))
                         .background(MaterialTheme.colorScheme.primaryContainer)
                         .clickable {
-
+                            navController.navigate("AllCenterListScreen")
                         })
 
             }

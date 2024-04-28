@@ -90,7 +90,9 @@ fun TrackNowScreen(
         val result = trackNowScreenViewModel.liveData.collectAsState()
 
         Column(Modifier.fillMaxWidth()) {
-            ActionBarWIthBack(title = "Track mechanic")
+            ActionBarWIthBack(title = "Track mechanic"){
+
+            }
         }
 
         when (result.value) {

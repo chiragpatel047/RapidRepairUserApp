@@ -43,7 +43,9 @@ import com.chirag047.rapidrepair.R
 fun ChangePasswordScreen(navController: NavController) {
     Box(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxWidth()) {
-            ActionBarWIthBack(title = "Change password")
+            ActionBarWIthBack(title = "Change password"){
+
+            }
 
             var currentPassword by remember { mutableStateOf("") }
             var newPassword by remember { mutableStateOf("") }

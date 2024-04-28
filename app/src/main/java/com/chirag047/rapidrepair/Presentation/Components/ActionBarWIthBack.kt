@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Presentation.Components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,7 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun ActionBarWIthBack(title : String){
+fun ActionBarWIthBack(title: String, onClick: () -> Unit) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -29,7 +30,10 @@ fun ActionBarWIthBack(title : String){
             modifier = Modifier
                 .size(30.dp)
                 .padding(5.dp)
-                .rotate(90f),
+                .rotate(90f)
+                .clickable {
+                    onClick.invoke()
+                },
             tint = MaterialTheme.colorScheme.onBackground
         )
         poppinsBoldCenterText(

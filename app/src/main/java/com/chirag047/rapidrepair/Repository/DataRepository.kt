@@ -35,11 +35,8 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
 
             trySend(ResponseType.Loading())
 
-            firestore.collection("users")
-                .document(auth.currentUser!!.uid)
-                .collection("vehicles")
-                .document(vehicleModel.vehicleId!!)
-                .set(vehicleModel).addOnCompleteListener {
+            firestore.collection("users").document(auth.currentUser!!.uid).collection("vehicles")
+                .document(vehicleModel.vehicleId!!).set(vehicleModel).addOnCompleteListener {
                     if (it.isSuccessful) {
                         trySend(ResponseType.Success("Vehicle added successfully"))
                     } else {
@@ -51,28 +48,23 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
             }
         }
 
-    suspend fun getMyVehicles(): Flow<ResponseType<List<VehicleModel>>> =
-        callbackFlow {
+    suspend fun getMyVehicles(): Flow<ResponseType<List<VehicleModel>>> = callbackFlow {
 
-            trySend(ResponseType.Loading())
+        trySend(ResponseType.Loading())
 
-            firestore.collection("users")
-                .document(auth.currentUser!!.uid)
-                .collection("vehicles")
-                .addSnapshotListener { value, error ->
-                    trySend(ResponseType.Success(value!!.toObjects(VehicleModel::class.java)))
-                }
-            awaitClose {
-                close()
+        firestore.collection("users").document(auth.currentUser!!.uid).collection("vehicles")
+            .addSnapshotListener { value, error ->
+                trySend(ResponseType.Success(value!!.toObjects(VehicleModel::class.java)))
             }
+        awaitClose {
+            close()
         }
+    }
 
     suspend fun deleteMyVehicle(vehicleId: String): Flow<ResponseType<String>> = callbackFlow {
         trySend(ResponseType.Loading())
 
-        firestore.collection("users")
-            .document(auth.currentUser!!.uid)
-            .collection("vehicles")
+        firestore.collection("users").document(auth.currentUser!!.uid).collection("vehicles")
             .document(vehicleId).delete().addOnCompleteListener {
                 if (it.isSuccessful) {
                     trySend(ResponseType.Success("Vehicle deleted"))
@@ -86,28 +78,42 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
     }
 
 
-    suspend fun updateUserCity(city: String): Flow<ResponseType<String>> =
-        callbackFlow {
-            trySend(ResponseType.Loading())
+    suspend fun updateUserCity(city: String): Flow<ResponseType<String>> = callbackFlow {
+        trySend(ResponseType.Loading())
 
-            firestore.collection("users")
-                .document(auth.currentUser!!.uid)
-                .update("city", city).addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        trySend(ResponseType.Success("Added"))
-                    }
+        firestore.collection("users").document(auth.currentUser!!.uid).update("city", city)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    trySend(ResponseType.Success("Added"))
                 }
-            awaitClose {
-                close()
             }
+        awaitClose {
+            close()
         }
+    }
 
+
+    suspend fun updateUserProfilePictureAndPhone(
+        userImage: String, phoneNo: String
+    ): Flow<ResponseType<String>> = callbackFlow {
+        trySend(ResponseType.Loading())
+
+        firestore.collection("users").document(auth.currentUser!!.uid)
+            .update("userImage", userImage, "phoneNo", phoneNo).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    trySend(ResponseType.Success("Updated successfully"))
+                }
+            }
+        awaitClose {
+            close()
+        }
+    }
 
     suspend fun getUserDetails(): Flow<ResponseType<UserModel?>> = callbackFlow {
         trySend(ResponseType.Loading())
 
-        firestore.collection("users")
-            .document(auth.currentUser!!.uid).addSnapshotListener { value, error ->
+        firestore.collection("users").document(auth.currentUser!!.uid)
+            .addSnapshotListener { value, error ->
                 trySend(ResponseType.Success(value!!.toObject(UserModel::class.java)))
             }
         awaitClose {
@@ -119,9 +125,8 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
 
         trySend(ResponseType.Loading())
 
-        firestore.collection("orders")
-            .document(orderModel.orderId)
-            .set(orderModel).addOnCompleteListener {
+        firestore.collection("orders").document(orderModel.orderId).set(orderModel)
+            .addOnCompleteListener {
                 if (it.isSuccessful) {
                     trySend(ResponseType.Success("Submitted successfully"))
                 } else {
@@ -135,32 +140,28 @@ class DataRepository @Inject constructor(val auth: FirebaseAuth, val firestore: 
     }
 
 
-
     suspend fun getMyRequests(
         userId: String
-    ): Flow<ResponseType<List<OrderModel>>> =
-        callbackFlow {
+    ): Flow<ResponseType<List<OrderModel>>> = callbackFlow {
 
-            trySend(ResponseType.Loading())
+        trySend(ResponseType.Loading())
 
-            firestore.collection("orders")
-                .whereEqualTo("userId", userId)
-                .addSnapshotListener { value, error ->
-                    trySend(ResponseType.Success(value!!.toObjects(OrderModel::class.java)))
-                }
-
-            awaitClose {
-                close()
+        firestore.collection("orders").whereEqualTo("userId", userId)
+            .addSnapshotListener { value, error ->
+                trySend(ResponseType.Success(value!!.toObjects(OrderModel::class.java)))
             }
+
+        awaitClose {
+            close()
         }
+    }
 
     suspend fun trackLiveLocation(orderId: String): Flow<ResponseType<Coordinates?>> =
         callbackFlow {
 
             trySend(ResponseType.Loading())
 
-            firestore.collection("liveTrack")
-                .document(orderId)
+            firestore.collection("liveTrack").document(orderId)
                 .addSnapshotListener { value, error ->
                     trySend(ResponseType.Success(value!!.toObject(Coordinates::class.java))!!)
                 }

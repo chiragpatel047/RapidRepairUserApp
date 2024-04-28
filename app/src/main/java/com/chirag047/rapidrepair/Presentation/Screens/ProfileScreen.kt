@@ -41,7 +41,7 @@ import com.chirag047.rapidrepair.Presentation.Components.poppinsText
 import com.chirag047.rapidrepair.R
 
 @Composable
-fun ProfileScreen(navController: NavController,sharedPreferences: SharedPreferences) {
+fun ProfileScreen(navController: NavController, sharedPreferences: SharedPreferences) {
     Box(Modifier.fillMaxSize()) {
 
         Column(Modifier.fillMaxWidth()) {
@@ -52,7 +52,7 @@ fun ProfileScreen(navController: NavController,sharedPreferences: SharedPreferen
                     .fillMaxWidth()
                     .padding(15.dp)
             )
-            
+
             val scroll = rememberScrollState()
             Column(
                 Modifier
@@ -79,8 +79,8 @@ fun ProfileScreen(navController: NavController,sharedPreferences: SharedPreferen
 
                     Column() {
                         Text(
-                            text = sharedPreferences.getString("userName","")!!,
-                            fontSize = 16.sp,
+                            text = sharedPreferences.getString("userName", "")!!,
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             fontFamily = FontFamily(Font(R.font.poppins_medium)),
                             modifier = Modifier
@@ -88,15 +88,14 @@ fun ProfileScreen(navController: NavController,sharedPreferences: SharedPreferen
                                 .padding(10.dp, 0.dp)
                         )
                         Text(
-                            text = sharedPreferences.getString("userEmail","")!!,
-                            fontSize = 14.sp,
+                            text = sharedPreferences.getString("userEmail", "")!!,
+                            fontSize = 12.sp,
                             fontFamily = FontFamily(Font(R.font.poppins_medium)),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(10.dp, 0.dp)
                         )
                     }
-
                 }
 
                 Spacer(modifier = Modifier.padding(10.dp))
@@ -210,7 +209,6 @@ fun singleSetting(icon: Int, title: String, desc: String, onclick: () -> Unit) {
                         .padding(10.dp, 0.dp)
                 )
             }
-
         }
 
         if (!title.equals("Logout")) {

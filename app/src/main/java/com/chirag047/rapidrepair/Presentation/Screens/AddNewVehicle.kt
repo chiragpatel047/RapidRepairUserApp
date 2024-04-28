@@ -65,7 +65,9 @@ fun AddNewVehicle(navController: NavController) {
                 .fillMaxWidth()
                 .verticalScroll(scroll)
         ) {
-            ActionBarWIthBack(title = "Add new vehicle")
+            ActionBarWIthBack(title = "Add new vehicle"){
+
+            }
 
             Spacer(modifier = Modifier.padding(4.dp))
             poppinsBoldText(

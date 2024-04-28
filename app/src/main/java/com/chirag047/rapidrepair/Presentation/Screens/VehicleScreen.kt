@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.chirag047.rapidrepair.Common.ResponseType
 import com.chirag047.rapidrepair.Model.VehicleModel
+import com.chirag047.rapidrepair.Presentation.Components.NoDataText
 import com.chirag047.rapidrepair.Presentation.Components.SingleVehicle
 import com.chirag047.rapidrepair.Presentation.Components.Vehicle
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldCenterText
@@ -48,7 +49,11 @@ fun VehicleScreen(navController: NavController, parentNavController: NavControll
     val scope = rememberCoroutineScope()
 
     val vehicleList = remember {
-        mutableStateOf(mutableListOf(VehicleModel()))
+        mutableListOf<VehicleModel>()
+    }
+
+    val vehicleListStatus = remember {
+        mutableStateOf("Loading...")
     }
 
     LaunchedEffect(key1 = Unit) {
@@ -67,35 +72,35 @@ fun VehicleScreen(navController: NavController, parentNavController: NavControll
             }
 
             is ResponseType.Loading -> {
-                CircularProgressIndicator(Modifier.align(Alignment.Center))
+
             }
 
             is ResponseType.Success -> {
-                val list = mutableListOf<VehicleModel>()
-                list.clear()
+                vehicleList.clear()
 
-                list.addAll(state.value.data!!)
-                vehicleList.value = list
+                vehicleList.addAll(state.value.data!!)
 
-                var scroll = rememberScrollState()
-
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(scroll)
-
-                ) {
-                    poppinsBoldCenterText(
-                        contentText = "My vehicle",
-                        size = 16.sp,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(15.dp)
-                    )
-
-                    loadVehicles(vehicleList.value, vehicleScreenViewModel)
-                }
             }
+        }
+
+        val scroll = rememberScrollState()
+
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .verticalScroll(scroll)
+
+        ) {
+            poppinsBoldCenterText(
+                contentText = "My vehicle",
+                size = 16.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+            )
+
+            loadVehicles(vehicleList, vehicleScreenViewModel)
+            NoDataText(vehicleListStatus.value, vehicleList.size.equals(0))
         }
 
         ExtendedFloatingActionButton(
