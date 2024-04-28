@@ -78,7 +78,7 @@ import com.chirag047.rapidrepair.Presentation.Components.customProgressBar as cu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController,sharedPreferences: SharedPreferences) {
+fun LoginScreen(navController: NavController, sharedPreferences: SharedPreferences) {
 
     val loginViewModel: LoginViewModel = hiltViewModel()
 
@@ -255,11 +255,21 @@ fun LoginScreen(navController: NavController,sharedPreferences: SharedPreference
                                                 navController.navigate("SelectCityScreen")
                                             } else {
 
-                                                sharedPreferences.edit().putString("userName",it.data.userName).apply()
-                                                sharedPreferences.edit().putString("userEmail",it.data.email).apply()
-                                                sharedPreferences.edit().putString("userCity", it.data.city).apply()
-                                                sharedPreferences.edit().putString("userId", it.data.uid).apply()
-                                                sharedPreferences.edit().putBoolean("isFilled",true).apply()
+                                                sharedPreferences.edit()
+                                                    .putString("userName", it.data.userName).apply()
+                                                sharedPreferences.edit()
+                                                    .putString("userEmail", it.data.email).apply()
+                                                sharedPreferences.edit()
+                                                    .putString("userCity", it.data.city).apply()
+                                                sharedPreferences.edit()
+                                                    .putString("userId", it.data.uid).apply()
+
+                                                sharedPreferences.edit()
+                                                    .putString("profileImage", it.data.userImage)
+                                                    .apply()
+
+                                                sharedPreferences.edit()
+                                                    .putBoolean("isFilled", true).apply()
 
                                                 navController.navigate("AllowLocation")
                                             }

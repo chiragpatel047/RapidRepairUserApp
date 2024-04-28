@@ -3,6 +3,7 @@ package com.chirag047.rapidrepair.Presentation.Screens
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -67,7 +68,7 @@ import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldText as popp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProfile(navController: NavController) {
+fun EditProfile(navController: NavController, sharedPreferences: SharedPreferences) {
 
     val profileViewModel: ProfileViewModel = hiltViewModel()
 
@@ -307,7 +308,8 @@ fun EditProfile(navController: NavController) {
                         profileViewModel.updateUserProfilePictureAndPhone(
                             imageUri.value,
                             nameText,
-                            numberText
+                            numberText,
+                            sharedPreferences
                         ).collect {
                             when (it) {
                                 is ResponseType.Error -> {
@@ -324,6 +326,8 @@ fun EditProfile(navController: NavController) {
                                     showProgressBar.value = false
                                     snackBarMsg.value = it.data!!
                                     openMySnackbar.value = true
+
+                                    sharedPreferences.edit().putString("userName", nameText).apply()
                                     navController.popBackStack()
                                 }
                             }

@@ -27,6 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -35,10 +38,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldCenterText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsBoldText
 import com.chirag047.rapidrepair.Presentation.Components.poppinsText
 import com.chirag047.rapidrepair.R
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun ProfileScreen(navController: NavController, sharedPreferences: SharedPreferences) {
@@ -54,6 +60,7 @@ fun ProfileScreen(navController: NavController, sharedPreferences: SharedPrefere
             )
 
             val scroll = rememberScrollState()
+            val imageUrl = sharedPreferences.getString("profileImage", "")
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -67,13 +74,28 @@ fun ProfileScreen(navController: NavController, sharedPreferences: SharedPrefere
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.profile_image_temp),
-                        contentDescription = "",
-                        Modifier
-                            .size(100.dp)
-                            .clip(RoundedCornerShape(50.dp))
-                    )
+                    if (imageUrl.equals("")) {
+                        Image(
+                            painter = painterResource(R.drawable.profile_filled_icon),
+                            contentDescription = "",
+                            colorFilter = ColorFilter.tint(Color.White),
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(RoundedCornerShape(50.dp))
+                                .background(Color.Gray)
+                                .padding(10.dp)
+                        )
+                    } else {
+                        Image(
+                            painter = rememberImagePainter(imageUrl),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(100.dp)
+                                .clip(RoundedCornerShape(50.dp))
+                        )
+
+                    }
 
                     Spacer(modifier = Modifier.padding(4.dp))
 
@@ -129,7 +151,7 @@ fun ProfileScreen(navController: NavController, sharedPreferences: SharedPrefere
                     title = "Password",
                     desc = "Change your password"
                 ) {
-                    navController.navigate("ChangePasswordScreen")
+                    navController.navigate("ForgetPassword")
                 }
 
                 singleSetting(
@@ -145,7 +167,13 @@ fun ProfileScreen(navController: NavController, sharedPreferences: SharedPrefere
                     title = "Logout",
                     desc = ""
                 ) {
-
+                    val firebaseAuth = Firebase.auth
+                    firebaseAuth.signOut()
+                    navController.popBackStack()
+                    navController.popBackStack()
+                    navController.popBackStack()
+                    navController.popBackStack()
+                    navController.navigate("SignUpScreen")
                 }
             }
         }

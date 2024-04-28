@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Presentation.ViewModels
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chirag047.rapidrepair.Common.ResponseType
@@ -17,9 +18,10 @@ class ProfileViewModel @Inject constructor(val dataRepository: DataRepository) :
     suspend fun updateUserProfilePictureAndPhone(
         userImage: String,
         userName: String,
-        phoneNo: String
+        phoneNo: String,
+        sharedPreferences: SharedPreferences
     ) =
-        dataRepository.updateUserProfilePictureAndPhone(userImage, userName, phoneNo)
+        dataRepository.updateUserProfilePictureAndPhone(userImage, userName, phoneNo,sharedPreferences)
 
     suspend fun getUserDetails() = dataRepository.getUserDetails()
 }

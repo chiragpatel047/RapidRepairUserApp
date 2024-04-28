@@ -45,7 +45,6 @@ import kotlinx.coroutines.launch
 fun VehicleScreen(navController: NavController, parentNavController: NavController) {
 
     val vehicleScreenViewModel: VehicleScreenViewModel = hiltViewModel()
-
     val scope = rememberCoroutineScope()
 
     val vehicleList = remember {
@@ -77,9 +76,8 @@ fun VehicleScreen(navController: NavController, parentNavController: NavControll
 
             is ResponseType.Success -> {
                 vehicleList.clear()
-
                 vehicleList.addAll(state.value.data!!)
-
+                vehicleListStatus.value = "No vehicle added yet"
             }
         }
 

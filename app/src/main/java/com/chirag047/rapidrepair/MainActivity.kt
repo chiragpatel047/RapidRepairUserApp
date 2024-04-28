@@ -22,7 +22,6 @@ import com.chirag047.rapidrepair.Presentation.Screens.AddDetails
 import com.chirag047.rapidrepair.Presentation.Screens.AddNewVehicle
 import com.chirag047.rapidrepair.Presentation.Screens.AllCenterListScreen
 import com.chirag047.rapidrepair.Presentation.Screens.AllowLocation
-import com.chirag047.rapidrepair.Presentation.Screens.ChangePasswordScreen
 import com.chirag047.rapidrepair.Presentation.Screens.EditProfile
 import com.chirag047.rapidrepair.Presentation.Screens.ForgetPassword
 import com.chirag047.rapidrepair.Presentation.Screens.HomeScreen
@@ -203,13 +202,10 @@ class MainActivity : ComponentActivity() {
             }
 
             composable(route = "EditProfile") {
-                EditProfile(navController)
+                EditProfile(navController,sharedPreferences)
             }
             composable(route = "NotificationScreen") {
                 NotificationScreen(navController)
-            }
-            composable(route = "ChangePasswordScreen") {
-                ChangePasswordScreen(navController)
             }
             composable(route = "AllCenterListScreen") {
                 AllCenterListScreen(navController, sharedPreferences)

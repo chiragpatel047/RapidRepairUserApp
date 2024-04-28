@@ -1,5 +1,6 @@
 package com.chirag047.rapidrepair.Repository
 
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import com.chirag047.rapidrepair.Common.ResponseType
@@ -100,7 +101,7 @@ class DataRepository @Inject constructor(
     }
 
     suspend fun updateUserProfilePictureAndPhone(
-        userImage: String, userName: String, phoneNo: String
+        userImage: String, userName: String, phoneNo: String, sharedPreferences: SharedPreferences
     ): Flow<ResponseType<String>> = callbackFlow {
         trySend(ResponseType.Loading())
 
@@ -111,6 +112,7 @@ class DataRepository @Inject constructor(
 
             ref.putFile(Uri.parse(userImage)).addOnSuccessListener {
                 ref.downloadUrl.addOnSuccessListener {
+                    sharedPreferences.edit().putString("profileImage", it.toString()).apply()
 
                     firestore.collection("users").document(auth.currentUser!!.uid)
                         .update("userImage", it, "userName", userName, "phoneNo", phoneNo)
