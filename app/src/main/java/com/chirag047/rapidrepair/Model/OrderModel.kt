@@ -14,11 +14,13 @@ data class OrderModel(
     val vehicleFuelType: String = "",
     val vehicleLicensePlate: String = "",
     val serviceType: String = "",
+    val clientProfileImage: String = "",
     val clientAddress: String = "",
     val clientLatitude: String = "",
     val clientLongitude: String = "",
     val clientAddedText: String = "",
     val orderStatus: String = "",
+    val orderInfo: String = "",
     val mechanicLiveLatitude: String = "",
-    val mechanicLiveLongitude: String = ""
+    val mechanicLiveLongitude: String = "",
 )

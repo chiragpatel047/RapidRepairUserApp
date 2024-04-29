@@ -95,7 +95,7 @@ fun RequestConfirmation(
                 .fillMaxWidth()
                 .verticalScroll(scroll)
         ) {
-            ActionBarWIthBack(title = "Request Confirmation"){
+            ActionBarWIthBack(title = "Request Confirmation") {
 
             }
 
@@ -175,11 +175,13 @@ fun RequestConfirmation(
                             vehicleFuelType,
                             vehicleLicensePlate,
                             serviceType,
+                            sharedPreferences.getString("profileImage", "")!!,
                             clientAddress,
                             clientLatitude,
                             clientLongitude,
                             clientAddedText,
                             "Pending",
+                            "Status : Your request currently in pending list",
                             "",
                             ""
                         )

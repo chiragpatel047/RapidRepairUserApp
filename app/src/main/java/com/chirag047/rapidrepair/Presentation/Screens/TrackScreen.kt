@@ -278,65 +278,79 @@ fun TrackSingle(title: String, desc: String, onclick: () -> Unit) {
 
 
 @Composable
-fun TrackHistorySingle(title: String, desc: String) {
-    Row(
+fun TrackHistorySingle(title: String, desc: String, orderInfo: String) {
+
+    Column(
         Modifier
             .padding(15.dp, 7.dp)
             .clip(RoundedCornerShape(25.dp))
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .clickable {
 
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+            }) {
 
-        Column(
-            Modifier
-                .padding(15.dp, 0.dp, 7.dp, 0.dp)
-                .clip(RoundedCornerShape(10.dp))
 
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Spacer(modifier = Modifier.padding(10.dp))
-            Box(
-                modifier = Modifier
-                    .size(50.dp)
-                    .padding(5.dp)
-                    .clip(RoundedCornerShape(50.dp))
-                    .background(MaterialTheme.colorScheme.secondary),
+
+            Column(
+                Modifier
+                    .padding(15.dp, 0.dp, 7.dp, 0.dp)
+                    .clip(RoundedCornerShape(10.dp))
+
             ) {
-                Icon(
-                    painterResource(id = R.drawable.history),
-                    contentDescription = "",
-                    tint = MaterialTheme.colorScheme.onSecondary,
+                Spacer(modifier = Modifier.padding(10.dp))
+                Box(
                     modifier = Modifier
                         .size(50.dp)
-                        .padding(10.dp)
-                )
+                        .padding(5.dp)
+                        .clip(RoundedCornerShape(50.dp))
+                        .background(MaterialTheme.colorScheme.secondary),
+                ) {
+                    Icon(
+                        painterResource(id = R.drawable.history),
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onSecondary,
+                        modifier = Modifier
+                            .size(50.dp)
+                            .padding(10.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.padding(10.dp))
             }
-            Spacer(modifier = Modifier.padding(10.dp))
+
+            Column(Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.padding(10.dp))
+
+                poppinsBoldText(
+                    contentText = title,
+                    size = 14.sp,
+                    modifier = Modifier
+                        .padding(10.dp, 0.dp)
+                )
+
+                poppinsText(
+                    contentText = desc,
+                    size = 12.sp,
+                    modifier = Modifier
+                        .padding(10.dp, 0.dp)
+                )
+
+                Spacer(modifier = Modifier.padding(10.dp))
+
+            }
+
         }
-
-        Column(Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.padding(10.dp))
-
-            poppinsBoldText(
-                contentText = title,
-                size = 14.sp,
-                modifier = Modifier
-                    .padding(10.dp, 0.dp)
-            )
-
-            poppinsText(
-                contentText = desc,
-                size = 12.sp,
-                modifier = Modifier
-                    .padding(10.dp, 0.dp)
-            )
-
-            Spacer(modifier = Modifier.padding(10.dp))
-
-        }
-
+        Text(
+            text = orderInfo,
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.primary,
+            fontFamily = FontFamily(Font(R.font.poppins_medium)),
+            modifier = Modifier
+                .padding(20.dp, 0.dp, 20.dp, 20.dp)
+        )
     }
 }
 
@@ -358,7 +372,7 @@ fun loadDoneRequests(list: List<OrderModel>, navController: NavController) {
 
         TrackHistorySingle(
             it.corporateName,
-            it.vehicleCompany + " " + it.vehicleModel + " | " + it.vehicleFuelType
+            it.vehicleCompany + " " + it.vehicleModel + " | " + it.vehicleFuelType, it.orderInfo
         )
     }
 }
