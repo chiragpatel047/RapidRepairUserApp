@@ -44,6 +44,7 @@ import com.chirag047.rapidrepair.Presentation.ViewModels.SignUpViewModel
 import com.chirag047.rapidrepair.ui.theme.RapidRepairTheme
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -64,13 +65,18 @@ class MainActivity : ComponentActivity() {
                     val isFilledData = sharePreferences.getBoolean("isFilled", false)
 
                     if (firebaseAuth.currentUser != null) {
+                        
+                        FirebaseMessaging.getInstance().subscribeToTopic(firebaseAuth.uid!!)
+                        FirebaseMessaging.getInstance().subscribeToTopic("new")
 
                         if (isFilledData) {
                             App("MainScreen", sharePreferences)
                         } else {
                             App("SelectCityScreen", sharePreferences)
                         }
+
                     } else {
+
                         App("WelcomeScreen", sharePreferences)
                     }
                 }
