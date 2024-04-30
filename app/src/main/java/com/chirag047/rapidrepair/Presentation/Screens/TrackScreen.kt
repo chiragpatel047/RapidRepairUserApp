@@ -68,7 +68,6 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
             mutableListOf<OrderModel>()
         }
 
-
         val doneOrdersList = remember {
             mutableListOf<OrderModel>()
         }

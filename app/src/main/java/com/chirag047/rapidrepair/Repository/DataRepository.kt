@@ -3,10 +3,13 @@ package com.chirag047.rapidrepair.Repository
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import com.chirag047.rapidrepair.Api.NotificationApi
 import com.chirag047.rapidrepair.Common.ResponseType
 import com.chirag047.rapidrepair.Model.CenterModel
 import com.chirag047.rapidrepair.Model.Coordinates
+import com.chirag047.rapidrepair.Model.FirebaseNotificationModel
 import com.chirag047.rapidrepair.Model.OrderModel
+import com.chirag047.rapidrepair.Model.PushNotification
 import com.chirag047.rapidrepair.Model.UserModel
 import com.chirag047.rapidrepair.Model.VehicleModel
 import com.google.firebase.auth.FirebaseAuth
@@ -21,7 +24,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
-    val auth: FirebaseAuth, val firestore: FirebaseFirestore, val storage: FirebaseStorage
+    val auth: FirebaseAuth, val firestore: FirebaseFirestore, val storage: FirebaseStorage,
+    val notificationApi: NotificationApi
 ) {
 
     suspend fun getCenters(cityName: String): Flow<ResponseType<List<CenterModel>>> = callbackFlow {
@@ -155,14 +159,28 @@ class DataRepository @Inject constructor(
 
         trySend(ResponseType.Loading())
 
-        firestore.collection("orders").document(orderModel.orderId).set(orderModel)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    trySend(ResponseType.Success("Submitted successfully"))
-                } else {
-                    trySend(ResponseType.Error("Something went wrong"))
-                }
+        firestore.collection("orders")
+            .document(orderModel.orderId)
+            .set(orderModel)
+            .await()
+
+        val notify = withContext(Dispatchers.IO) {
+
+            val notification = PushNotification(
+                FirebaseNotificationModel(
+                    "New order request",
+                    "You have a new order request from " + orderModel.vehicleOwner
+                ), "/topics/" + orderModel.corporateId
+            )
+
+            try {
+                val respose = notificationApi.postNotification(notification)
+                trySend(ResponseType.Success("Submitted successfully"))
+
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
+        }
 
         awaitClose {
             close()
