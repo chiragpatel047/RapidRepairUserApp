@@ -211,7 +211,7 @@ class MainActivity : ComponentActivity() {
                 EditProfile(navController,sharedPreferences)
             }
             composable(route = "NotificationScreen") {
-                NotificationScreen(navController)
+                NotificationScreen(navController,sharedPreferences)
             }
             composable(route = "AllCenterListScreen") {
                 AllCenterListScreen(navController, sharedPreferences)

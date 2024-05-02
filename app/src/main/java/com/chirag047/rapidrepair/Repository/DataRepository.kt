@@ -8,6 +8,7 @@ import com.chirag047.rapidrepair.Common.ResponseType
 import com.chirag047.rapidrepair.Model.CenterModel
 import com.chirag047.rapidrepair.Model.Coordinates
 import com.chirag047.rapidrepair.Model.FirebaseNotificationModel
+import com.chirag047.rapidrepair.Model.NotificationModel
 import com.chirag047.rapidrepair.Model.OrderModel
 import com.chirag047.rapidrepair.Model.PushNotification
 import com.chirag047.rapidrepair.Model.UserModel
@@ -21,6 +22,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
@@ -164,6 +167,26 @@ class DataRepository @Inject constructor(
             .set(orderModel)
             .await()
 
+        val dateFormate = SimpleDateFormat("dd MMMM yyyy")
+        val currentDate = dateFormate.format(Date())
+
+        val timeFormate = SimpleDateFormat("hh:mm a")
+        val currentTime = timeFormate.format(Date())
+
+
+        val notificationModel = NotificationModel(
+            System.currentTimeMillis().toString(),
+            "You have a new order request from " + orderModel.vehicleOwner,
+            currentDate,
+            currentTime
+        )
+
+        firestore.collection("centers")
+            .document(orderModel.corporateId)
+            .collection("notifications")
+            .document(notificationModel.notificationId)
+            .set(notificationModel).await()
+
         val notify = withContext(Dispatchers.IO) {
 
             val notification = PushNotification(
@@ -212,6 +235,24 @@ class DataRepository @Inject constructor(
             firestore.collection("liveTrack").document(orderId)
                 .addSnapshotListener { value, error ->
                     trySend(ResponseType.Success(value!!.toObject(Coordinates::class.java))!!)
+                }
+
+            awaitClose {
+                close()
+            }
+        }
+
+
+    suspend fun getMyAllNotifications(): Flow<ResponseType<List<NotificationModel>?>> =
+        callbackFlow {
+
+            trySend(ResponseType.Loading())
+
+            firestore.collection("users")
+                .document(auth.currentUser!!.uid)
+                .collection("notifications")
+                .addSnapshotListener { value, error ->
+                    trySend(ResponseType.Success(value!!.toObjects(NotificationModel::class.java))!!)
                 }
 
             awaitClose {
