@@ -139,17 +139,17 @@ fun TrackNowScreen(
                         icon = getIconFromBitmapVector(context, R.drawable.technician)
                     )
 
-                    Marker(
-                        state = MarkerState(
-                            LatLng(
-                                clientLatitude.toDouble(),
-                                clientLongitude.toDouble()
-                            )
-                        ),
-                        title = "You",
-                        snippet = "Your location",
-                        icon = getIconFromBitmapVector(context, R.drawable.user_on_map_logo)
-                    )
+//                    Marker(
+//                        state = MarkerState(
+//                            LatLng(
+//                                clientLatitude.toDouble(),
+//                                clientLongitude.toDouble()
+//                            )
+//                        ),
+//                        title = "You",
+//                        snippet = "Your location",
+//                        icon = getIconFromBitmapVector(context, R.drawable.user_on_map_logo)
+//                    )
 
                 }
             }

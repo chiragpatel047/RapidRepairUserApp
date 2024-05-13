@@ -169,6 +169,23 @@ fun ProfileScreen(navController: NavController, sharedPreferences: SharedPrefere
                 ) {
                     val firebaseAuth = Firebase.auth
                     firebaseAuth.signOut()
+
+                    sharedPreferences.edit()
+                        .putString("userName", "").apply()
+                    sharedPreferences.edit()
+                        .putString("userEmail", "").apply()
+                    sharedPreferences.edit()
+                        .putString("userCity", "").apply()
+                    sharedPreferences.edit()
+                        .putString("userId", "").apply()
+
+                    sharedPreferences.edit()
+                        .putString("profileImage", "")
+                        .apply()
+
+                    sharedPreferences.edit()
+                        .putBoolean("isFilled", false).apply()
+
                     navController.popBackStack()
                     navController.popBackStack()
                     navController.popBackStack()

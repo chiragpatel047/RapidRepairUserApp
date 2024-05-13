@@ -167,26 +167,6 @@ class DataRepository @Inject constructor(
             .set(orderModel)
             .await()
 
-        val dateFormate = SimpleDateFormat("dd MMMM yyyy")
-        val currentDate = dateFormate.format(Date())
-
-        val timeFormate = SimpleDateFormat("hh:mm a")
-        val currentTime = timeFormate.format(Date())
-
-
-        val notificationModel = NotificationModel(
-            System.currentTimeMillis().toString(),
-            "You have a new order request from " + orderModel.vehicleOwner,
-            currentDate,
-            currentTime
-        )
-
-        firestore.collection("centers")
-            .document(orderModel.corporateId)
-            .collection("notifications")
-            .document(notificationModel.notificationId)
-            .set(notificationModel).await()
-
         val notify = withContext(Dispatchers.IO) {
 
             val notification = PushNotification(
@@ -241,7 +221,6 @@ class DataRepository @Inject constructor(
                 close()
             }
         }
-
 
     suspend fun getMyAllNotifications(): Flow<ResponseType<List<NotificationModel>?>> =
         callbackFlow {

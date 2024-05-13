@@ -357,7 +357,7 @@ fun TrackHistorySingle(title: String, desc: String, orderInfo: String) {
 fun loadLiveRequests(list: List<OrderModel>, navController: NavController) {
     list.forEach {
         TrackSingle(
-            it.vehicleOwner,
+            it.corporateName,
             it.vehicleCompany + " " + it.vehicleModel + " | " + it.vehicleFuelType
         ) {
             navController.navigate("TrackNowScreen" + "/${it.orderId}" + "/${it.clientAddress}" + "/${it.clientLatitude}" + "/${it.clientLongitude}" + "/${it.corporateAddress}")
