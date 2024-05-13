@@ -229,8 +229,8 @@ class MainActivity : ComponentActivity() {
                     navController, orderId, clientAddress,
                     clientLatitude,
                     clientLongitude,
+                    this@MainActivity,
                     corporateAddress,
-                    this@MainActivity
                 )
             }
         }
