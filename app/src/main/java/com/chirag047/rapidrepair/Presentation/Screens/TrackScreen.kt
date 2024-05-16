@@ -175,7 +175,7 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
                 Spacer(modifier = Modifier.padding(6.dp))
 
                 NoDataText(pendingOrdersStatus.value, pendingOrdersList.size.equals(0))
-                loadDoneRequests(pendingOrdersList, navController)
+                loadDoneRequests(pendingOrdersList.reversed(), navController)
 
                 Spacer(modifier = Modifier.padding(6.dp))
 
@@ -191,7 +191,7 @@ fun TrackScreen(navController: NavController, sharedPreferences: SharedPreferenc
 
 
                 NoDataText(doneOrdersStatus.value, doneOrdersList.size.equals(0))
-                loadDoneRequests(doneOrdersList, navController)
+                loadDoneRequests(doneOrdersList.reversed(), navController)
 
             }
 

@@ -79,9 +79,7 @@ fun SelectServiceScreen(
                 .fillMaxWidth()
         ) {
 
-            ActionBarWIthBack(title = "Request a service") {
-
-            }
+            ActionBarWIthBack(title = "Request a service")
 
             Spacer(modifier = Modifier.padding(4.dp))
             poppinsBoldText(

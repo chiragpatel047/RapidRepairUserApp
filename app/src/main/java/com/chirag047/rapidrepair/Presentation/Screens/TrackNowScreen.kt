@@ -113,9 +113,7 @@ fun TrackNowScreen(
         ) {
 
             Column(Modifier.fillMaxWidth()) {
-                ActionBarWIthBack(title = "Track location") {
-
-                }
+                ActionBarWIthBack(title = "Track location")
             }
 
             val cameraPositionState = rememberCameraPositionState {

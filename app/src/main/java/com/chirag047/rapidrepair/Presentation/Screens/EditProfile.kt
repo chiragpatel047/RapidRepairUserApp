@@ -124,9 +124,7 @@ fun EditProfile(navController: NavController, sharedPreferences: SharedPreferenc
         }
 
         Column(Modifier.fillMaxWidth()) {
-            ActionBarWIthBack(title = "Edit profile") {
-
-            }
+            ActionBarWIthBack(title = "Edit profile")
 
             Spacer(modifier = Modifier.padding(20.dp))
 

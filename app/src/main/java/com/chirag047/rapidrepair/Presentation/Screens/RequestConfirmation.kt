@@ -95,9 +95,7 @@ fun RequestConfirmation(
                 .fillMaxWidth()
                 .verticalScroll(scroll)
         ) {
-            ActionBarWIthBack(title = "Request Confirmation") {
-
-            }
+            ActionBarWIthBack(title = "Request Confirmation")
 
             var icon = R.drawable.car_icon
 

@@ -15,6 +15,7 @@ import com.chirag047.rapidrepair.Model.UserModel
 import com.chirag047.rapidrepair.Model.VehicleModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -230,6 +231,7 @@ class DataRepository @Inject constructor(
             firestore.collection("users")
                 .document(auth.currentUser!!.uid)
                 .collection("notifications")
+                .orderBy("notificationId", Query.Direction.DESCENDING)
                 .addSnapshotListener { value, error ->
                     trySend(ResponseType.Success(value!!.toObjects(NotificationModel::class.java))!!)
                 }

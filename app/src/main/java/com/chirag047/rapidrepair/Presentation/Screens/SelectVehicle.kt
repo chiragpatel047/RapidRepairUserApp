@@ -79,6 +79,11 @@ fun SelectVehicle(navController: NavController) {
             color = if (selectedIndex.value.equals(-1)) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.primary
         ) {
             if (!selectedIndex.value.equals(-1)) {
+                navController.popBackStack()
+                navController.popBackStack()
+                navController.popBackStack()
+                navController.popBackStack()
+                navController.popBackStack()
                 navController.navigate("MainScreen")
             }
         }

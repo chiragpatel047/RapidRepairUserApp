@@ -42,9 +42,7 @@ fun NotificationScreen(navController: NavController, sharedPreferences: SharedPr
         val result = notificationViewModel.requestsData.collectAsState()
 
         Column(Modifier.fillMaxWidth()) {
-            ActionBarWIthBack(title = "Notification") {
-
-            }
+            ActionBarWIthBack(title = "Notification")
 
             LaunchedEffect(key1 = Unit) {
                 scope.launch(Dispatchers.Main) {
