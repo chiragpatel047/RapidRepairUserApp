@@ -1,3 +1,7 @@
+<h2>Rapid Service (Garage App) :- https://github.com/chiragpatel047/RapidRepairServiceProviderApp.git </h2>
+
+<h2>Rapid Mechanic (Mechanic's App) :- https://github.com/chiragpatel047/RapidRepairDeliverApp.git </h2>
+
 <h1>App screenshots </h1>
 
 
